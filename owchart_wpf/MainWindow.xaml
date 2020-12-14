@@ -2,8 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:WinFormHost="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
-        Title="OWCHART证券图形控件(WPF)" Height="350" Width="525" Icon="oldwhite_old.ico">
-    <DockPanel >
+        Title="OWCHART证券图形控件(WPF)" Height="768" Width="1024" Icon="oldwhite_old.ico">
+    <DockPanel>
         <WindowsFormsHost Name="windowsFormsHost1" Margin="3"></WindowsFormsHost>
     </DockPanel>
 </Window>

@@ -17,38 +17,25 @@ namespace owchart_net {
     /// <summary>
     /// K线控件
     /// </summary>
-    public class ChartExtend : Chart {
+    public class ChartExtend2 : Chart {
         /// <summary>
         /// 创建控件
         /// </summary>
-        public ChartExtend() {
+        public ChartExtend2() {
             InitControl();
-            minuteDatas = GetSecurityMinuteDatas(Application.StartupPath + "\\SH600000_M.txt");
-            thisTimer.Enabled = true;
-            thisTimer.Tick += new EventHandler(thisTimer_Tick);
-            thisTimer.Interval = 100;
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip();
             this.tsmiAddIndicator = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAddPlot = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiGuanyu = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi5M = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi15M = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi30M = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmi60M = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDay = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMinute = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiBS = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiKLine = new System.Windows.Forms.ToolStripMenuItem();
             // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAddIndicator,
             this.tsmiAddPlot,
-            this.ToolStripMenuItem,
-            this.tsmiBS,
-            this.tsmiKLine,
-            this.tsmiGuanyu});
+            this.ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(153, 92);
             // 
@@ -68,56 +55,17 @@ namespace owchart_net {
             // 
             this.ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiMinute,
-            this.tsmi5M,
-            this.tsmi15M,
-            this.tsmi30M,
-            this.tsmi60M});
+            this.tsmiDay});
             this.ToolStripMenuItem.Name = "ToolStripMenuItem";
             this.ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.ToolStripMenuItem.Text = "切换周期";
-
-            this.tsmiBS.Name = "ToolStripMenuItem";
-            this.tsmiBS.Size = new System.Drawing.Size(152, 22);
-            this.tsmiBS.Text = "买卖标记";
-            this.tsmiBS.Click += new EventHandler(tsmiBS_Click);
-
-            this.tsmiKLine.Name = "ToolStripMenuItem";
-            this.tsmiKLine.Size = new System.Drawing.Size(152, 22);
-            this.tsmiKLine.Text = "纯K线界面";
-            this.tsmiKLine.Click += new EventHandler(tsmiKLine_Click);
-
-            this.tsmiGuanyu.Name = "ToolStripMenuItem";
-            this.tsmiGuanyu.Size = new System.Drawing.Size(152, 22);
-            this.tsmiGuanyu.Text = "关于";
-            this.tsmiGuanyu.Click += new EventHandler(tsmiGuanyu_Click);
-            // 
-            // tsmi5M
-            // 
-            this.tsmi5M.Name = "tsmi5M";
-            this.tsmi5M.Size = new System.Drawing.Size(152, 22);
-            this.tsmi5M.Text = "5分钟";
-            this.tsmi5M.Click += new System.EventHandler(this.tsmi5M_Click);
-            // 
-            // tsmi15M
-            // 
-            this.tsmi15M.Name = "tsmi15M";
-            this.tsmi15M.Size = new System.Drawing.Size(152, 22);
-            this.tsmi15M.Text = "15分钟";
-            this.tsmi15M.Click += new System.EventHandler(this.tsmi15M_Click);
-            // 
-            // tsmi30M
-            // 
-            this.tsmi30M.Name = "tsmi30M";
-            this.tsmi30M.Size = new System.Drawing.Size(152, 22);
-            this.tsmi30M.Text = "30分钟";
-            this.tsmi30M.Click += new System.EventHandler(this.tsmi30M_Click);
             // 
             // tsmi60M
             // 
-            this.tsmi60M.Name = "tsmi60M";
-            this.tsmi60M.Size = new System.Drawing.Size(152, 22);
-            this.tsmi60M.Text = "60分钟";
-            this.tsmi60M.Click += new System.EventHandler(this.tsmi60M_Click);
+            this.tsmiDay.Name = "tsmiDay";
+            this.tsmiDay.Size = new System.Drawing.Size(152, 22);
+            this.tsmiDay.Text = "日线";
+            this.tsmiDay.Click += new System.EventHandler(this.tsmiDay_Click);
             // 
             // tsmiMinute
             // 
@@ -152,86 +100,13 @@ namespace owchart_net {
                 }
             }
             ContextMenuStrip = contextMenuStrip1;
-        }
-
-        /// <summary>
-        /// 弹出纯K线界面
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tsmiKLine_Click(object sender, EventArgs e)
-        {
-            MainForm2 mainForm2 = new MainForm2();
-            mainForm2.Show();
+            ChangeCycle();
         }
 
         /// <summary>
         /// 指标名称
         /// </summary>
         private String indicatorName = "MACD";
-
-        /// <summary>
-        /// 显示买卖标记
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tsmiBS_Click(object sender, EventArgs e) {
-            if (!minuteMode) {
-                if (GetShape("买卖标记") == null) {
-                    int fieldName = CTableEx.AutoField;
-                    LineShape lineShape = AddLine("买卖标记", fieldName, mainDiv);
-                    lineShape.DisplayTitle = false;
-                    lineShape.StyleField = CTableEx.AutoField;
-                    lineShape.ColorField = CTableEx.AutoField;
-                    dataSource.AddColumn(lineShape.StyleField);
-                    dataSource.AddColumn(lineShape.ColorField);
-                    for (int i = 0; i < DataSource.RowsCount; i++) {
-                        int rdx = i % 6;
-                        if (rdx == 0) {
-                            DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_LOW));
-                            DataSource.Set2(i, lineShape.StyleField, 4);
-                            DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
-                        } else if (rdx == 1) {
-                            DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_HIGH));
-                            DataSource.Set2(i, lineShape.StyleField, 5);
-                            DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(255, 80, 80).ToArgb());
-                        } else if (rdx == 2) {
-                            DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_LOW));
-                            DataSource.Set2(i, lineShape.StyleField, 6);
-                            DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
-                        } else if (rdx == 3) {
-                            DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_HIGH));
-                            DataSource.Set2(i, lineShape.StyleField, 7);
-                            DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(255, 80, 80).ToArgb());
-                        } else if (rdx == 4) {
-                            DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_LOW));
-                            DataSource.Set2(i, lineShape.StyleField, 8);
-                            DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
-                        } else if (rdx == 5) {
-                            DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_HIGH));
-                            DataSource.Set2(i, lineShape.StyleField, 9);
-                            DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(255, 80, 80).ToArgb());
-                        }
-                    }
-                    RefreshGraph();
-                }
-            }
-        }
-
-        /// <summary>
-        /// 关于
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tsmiGuanyu_Click(object sender, EventArgs e) {
-            AboutForm aboutForm = new AboutForm();
-            aboutForm.ShowDialog();
-        }
-
-        /// <summary>
-        /// 上次的数据
-        /// </summary>
-        private SecurityLatestData lastData = new SecurityLatestData();
 
         /// <summary>
         /// 添加画线工具
@@ -265,116 +140,17 @@ namespace owchart_net {
         /// <param name="e"></param>
         private void tsmiMinute_Click(object sender, EventArgs e) {
             minuteMode = true;
-            ChangeSecurity(currentCode);
+            ChangeCycle();
         }
 
         /// <summary>
-        /// 添加5分钟线
+        /// 添加日线
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void tsmi5M_Click(object sender, EventArgs e) {
+        private void tsmiDay_Click(object sender, EventArgs e) {
             minuteMode = false;
-            Cycle = 5;
-            ChangeSecurity(currentCode);
-        }
-
-        /// <summary>
-        /// 添加15分钟线
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tsmi15M_Click(object sender, EventArgs e) {
-            minuteMode = false;
-            Cycle = 15;
-            ChangeSecurity(currentCode);
-        }
-
-        /// <summary>
-        /// 添加30分钟线
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tsmi30M_Click(object sender, EventArgs e) {
-            minuteMode = false;
-            Cycle = 30;
-            ChangeSecurity(currentCode);
-        }
-
-        /// <summary>
-        /// 添加60分钟线
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tsmi60M_Click(object sender, EventArgs e) {
-            minuteMode = false;
-            Cycle = 60;
-            ChangeSecurity(currentCode);
-        }
-
-        /// <summary>
-        /// 秒表事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void thisTimer_Tick(object sender, EventArgs e) {
-            if (minuteMode) {
-                if (minuteDatasPos < minuteDatas.Count) {
-                    minuteDatasPos++;
-                    UpdateDataToGraphMinute(minuteDatas, false);
-                    Invalidate();
-                }
-            } else {
-                SecurityLatestData newData = new SecurityLatestData();
-                SecurityService.GetLatestData(currentCode, ref newData);
-                if (!newData.equal(lastData) && newData.m_volume > 0) {
-                    double close = newData.m_close;
-                    double dVolume = 0;
-                    if (lastData.m_code.Length > 0) {
-                        dVolume = newData.m_volume - lastData.m_volume;
-                    }
-                    SecurityData securityData = new SecurityData();
-                    securityData.date = (double)((long)newData.m_date / (cycle * 60) * (cycle * 60));
-                    if (cycle != 1440) {
-                        securityData.date += (cycle * 60);
-                    }
-                    securityData.close = close;
-                    if (DataSource.RowsCount > 0) {
-                        if (DataSource.GetXValue(DataSource.RowsCount - 1) == securityData.date) {
-                            if (securityData.close > DataSource.Get2(DataSource.RowsCount - 1, COLUMN_HIGH)) {
-                                securityData.high = close;
-                            } else {
-                                securityData.high = DataSource.Get2(DataSource.RowsCount - 1, COLUMN_HIGH);
-                            }
-                            if (securityData.close < DataSource.Get2(DataSource.RowsCount - 1, COLUMN_LOW)) {
-                                securityData.low = close;
-                            } else {
-                                securityData.low = DataSource.Get2(DataSource.RowsCount - 1, COLUMN_LOW);
-                            }
-                            securityData.open = DataSource.Get2(DataSource.RowsCount - 1, COLUMN_OPEN);
-                            double oldVolume = DataSource.Get2(DataSource.RowsCount - 1, COLUMN_VOLUME);
-                            oldVolume += dVolume;
-                            securityData.volume = oldVolume;
-
-                        } else {
-                            securityData.high = close;
-                            securityData.low = close;
-                            securityData.open = close;
-                            securityData.volume = dVolume;
-                        }
-                    } else {
-                        securityData.high = close;
-                        securityData.low = close;
-                        securityData.open = close;
-                        securityData.volume = dVolume;
-                    }
-                    List<SecurityData> datas = new List<SecurityData>();
-                    datas.Add(securityData);
-                    UpdateDataToGraph(datas, false);
-                    datas.Clear();
-                    lastData = newData;
-                }
-            }
+            ChangeCycle();
         }
 
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
@@ -382,13 +158,7 @@ namespace owchart_net {
         private System.Windows.Forms.ToolStripMenuItem tsmiAddPlot;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmiMinute;
-        private System.Windows.Forms.ToolStripMenuItem tsmi5M;
-        private System.Windows.Forms.ToolStripMenuItem tsmi15M;
-        private System.Windows.Forms.ToolStripMenuItem tsmi30M;
-        private System.Windows.Forms.ToolStripMenuItem tsmi60M;
-        private System.Windows.Forms.ToolStripMenuItem tsmiGuanyu;
-        private System.Windows.Forms.ToolStripMenuItem tsmiBS;
-        private System.Windows.Forms.ToolStripMenuItem tsmiKLine;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDay;
 
 
         /// <summary>
@@ -403,31 +173,6 @@ namespace owchart_net {
         /// 指标
         /// </summary>
         private List<BaseIndicator> indicators = new List<BaseIndicator>();
-
-        /// <summary>
-        /// 分钟数据
-        /// </summary>
-        private List<SecurityData> minuteDatas = new List<SecurityData>();
-
-        /// <summary>
-        /// 分钟线的位置
-        /// </summary>
-        private int minuteDatasPos = 0;
-
-        /// <summary>
-        /// 秒表
-        /// </summary>
-        private System.Windows.Forms.Timer thisTimer = new Timer();
-
-        private int cycle = 5;
-
-        /// <summary>
-        /// 周期
-        /// </summary>
-        public int Cycle {
-            get { return cycle; }
-            set { cycle = value; }
-        }
 
         /// <summary>
         /// 根据代码获取新浪历史数据
@@ -522,7 +267,7 @@ namespace owchart_net {
                 RightYScaleWidth = 80;
                 XScalePixel = 11;
                 mainDiv = AddChartDiv(60);
-                mainDiv.Title = cycle.ToString() + "分钟线";
+                mainDiv.Title = "日线";
                 mainDiv.XScale.Visible = false;
                 mainDiv.PaddingBottom = 10;
                 mainDiv.PaddingTop = 10;
@@ -588,32 +333,16 @@ namespace owchart_net {
         public static int COLUMN_LOW = CTableEx.AutoField;
 
         /// <summary>
-        /// 当前代码
-        /// </summary>
-        private String currentCode;
-
-        /// <summary>
         /// 改变代码
         /// </summary>
-        /// <param name="code"></param>
-        public void ChangeSecurity(String code) {
-            if (currentCode != code) {
-                currentCode = code;
-            }
+        public void ChangeCycle() {
             InitControl();
             if (minuteMode) {
-                minuteDatasPos = 0;
-                minuteDatas.Clear();
-                minuteDatas = GetSecurityMinuteDatas(Application.StartupPath + "\\SH600000_M.txt");
-                UpdateDataToGraphMinute(minuteDatas, true);
+                List<SecurityData> minuteDatas = GetSecurityMinuteDatas(Application.StartupPath + "\\SH600000_M.txt");
+                UpdateDataToGraphMinute(minuteDatas, minuteDatas[minuteDatas.Count - 1], true);
             } else {
-                lastData = new SecurityLatestData();
-                try {
-                    List<SecurityData> datas = ChartExtend.GetSinaHistoryDatasByStr(code, cycle);
-                    UpdateDataToGraph(datas, true);
-                    datas.Clear();
-                } catch (Exception ex) {
-                }
+                List<SecurityData> dayDatas = GetSecurityDatas(Application.StartupPath + "\\SH600000.txt");
+                UpdateDataToGraph(dayDatas, true);
             }
         }
 
@@ -663,18 +392,28 @@ namespace owchart_net {
         /// 更新数据到图像
         /// </summary>
         /// <param name="obj"></param>
-        public void UpdateDataToGraphMinute(List<SecurityData> list, bool empty) {
+        public void UpdateDataToGraphMinute(List<SecurityData> list, SecurityData latestData, bool clear)
+        {
+            if (clear)
+            {
+                DataSource.Clear();
+            }
             System.Drawing.Color color = System.Drawing.Color.SkyBlue;
             BarShape barVolume = GetShape("成交量") as BarShape;
-            int endIndex = list.Count;
-            if (!empty) {
-                endIndex = minuteDatasPos;
-            }
-            for (int i = 0; i < endIndex; i++) {
+            for (int i = 0; i < list.Count; i++)
+            {
                 SecurityData data = list[i];
+                if (latestData != null)
+                {
+                    if (data.date > latestData.date)
+                    {
+                        continue;
+                    }
+                }
                 bool isFirst = i == 0;
                 double date = data.date;
-                if (empty) {
+                if (latestData == null)
+                {
                     DataSource.Set(date, COLUMN_VOLUME, double.NaN);
                     DataSource.Set(date, COLUMN_CLOSE, double.NaN);
                 } else {
@@ -683,7 +422,8 @@ namespace owchart_net {
                 }
                 if (isFirst) {
                     LastClose = data.open;
-                    if (empty) {
+                    if (latestData == null)
+                    {
                         DataSource.Set(date, COLUMN_VOLUME, LastClose);
                         DataSource.Set(date, COLUMN_CLOSE, LastClose);
                     }
@@ -856,12 +596,38 @@ namespace owchart_net {
             return datas;
         }
 
-        protected override void OnKeyDown(KeyEventArgs e) {
-            base.OnKeyDown(e);
-            if (e.KeyCode == Keys.F5) {
-                minuteMode = !minuteMode;
-                ChangeSecurity(currentCode);
+        /// <summary>
+        /// 获取日线数据
+        /// </summary>
+        /// <returns></returns>
+        public static List<SecurityData> GetSecurityDatas(String path)
+        {
+            List<SecurityData> datas = new List<SecurityData>();
+            String appPath = Application.StartupPath;
+            String filePath = path;
+            String content = File.ReadAllText(filePath, Encoding.Default);
+            String[] strs = content.Split(new String[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            int strsSize = strs.Length;
+            for (int i = 2; i < strs.Length - 1; i++)
+            {
+                String str = strs[i];
+                String[] subStrs = str.Split(new String[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                SecurityData securityData = new SecurityData();
+                DateTime dayDate = Convert.ToDateTime(subStrs[0]);
+                securityData.date = (dayDate - new DateTime(1970, 1, 1)).TotalSeconds;
+                securityData.open = Convert.ToDouble(subStrs[1]);
+                securityData.high = Convert.ToDouble(subStrs[2]);
+                securityData.low = Convert.ToDouble(subStrs[3]);
+                securityData.close = Convert.ToDouble(subStrs[4]);
+                securityData.volume = Convert.ToDouble(subStrs[5]);
+                securityData.amount = Convert.ToDouble(subStrs[6]);
+                if (securityData.close <= 0)
+                {
+                    continue;
+                }
+                datas.Add(securityData);
             }
+            return datas;
         }
     }
 }
