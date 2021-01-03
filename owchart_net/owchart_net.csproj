@@ -110,6 +110,10 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="TeachForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TeachForm.cs</DependentUpon>
+    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -128,6 +132,12 @@
     <Compile Include="SecurityService.cs" />
     <Compile Include="ChartExtend2.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TeachForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TeachForm.Designer.cs">
+      <DependentUpon>TeachForm.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

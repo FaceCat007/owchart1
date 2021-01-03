@@ -1,0 +1,11 @@
+\\Mac\Home\Desktop\todd\publish\owchart\owchart_gitee\owchart_net\obj\Debug\ResolveAssemblyReference.cache
+\\Mac\Home\Desktop\todd\publish\owchart\owchart_gitee\owchart_net\obj\Debug\owchart_net.AboutForm.resources
+\\Mac\Home\Desktop\todd\publish\owchart\owchart_gitee\owchart_net\obj\Debug\owchart_net.MainForm.resources
+\\Mac\Home\Desktop\todd\publish\owchart\owchart_gitee\owchart_net\obj\Debug\owchart_net.MainForm2.resources
+\\Mac\Home\Desktop\todd\publish\owchart\owchart_gitee\owchart_net\obj\Debug\owchart_net.Properties.Resources.resources
+\\Mac\Home\Desktop\todd\publish\owchart\owchart_gitee\owchart_net\obj\Debug\owchart_net.TeachForm.resources
+\\Mac\Home\Desktop\todd\publish\owchart\owchart_gitee\owchart_net\obj\Debug\owchart_net.csproj.GenerateResource.Cache
+\\Mac\Home\Desktop\todd\publish\owchart\owchart_gitee\owchart_net\bin\Debug\owchart_net.exe
+\\Mac\Home\Desktop\todd\publish\owchart\owchart_gitee\owchart_net\bin\Debug\owchart_net.pdb
+\\Mac\Home\Desktop\todd\publish\owchart\owchart_gitee\owchart_net\obj\Debug\owchart_net.exe
+\\Mac\Home\Desktop\todd\publish\owchart\owchart_gitee\owchart_net\obj\Debug\owchart_net.pdb
