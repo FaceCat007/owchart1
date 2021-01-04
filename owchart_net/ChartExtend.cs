@@ -39,6 +39,8 @@ namespace owchart_net {
             this.tsmiMinute = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiBS = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiKLine = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiLineBS = new ToolStripMenuItem();
+            this.tsmiTeach = new ToolStripMenuItem();
             // 
             // contextMenuStrip1
             // 
@@ -46,8 +48,10 @@ namespace owchart_net {
             this.tsmiAddIndicator,
             this.tsmiAddPlot,
             this.ToolStripMenuItem,
+            this.tsmiLineBS,
             this.tsmiBS,
             this.tsmiKLine,
+            this.tsmiTeach,
             this.tsmiGuanyu});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(153, 92);
@@ -76,6 +80,10 @@ namespace owchart_net {
             this.ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.ToolStripMenuItem.Text = "切换周期";
 
+            this.tsmiLineBS.Name = "ToolStripMenuItem";
+            this.tsmiLineBS.Size = new System.Drawing.Size(152, 22);
+            this.tsmiLineBS.Text = "画线交易[新]";
+
             this.tsmiBS.Name = "ToolStripMenuItem";
             this.tsmiBS.Size = new System.Drawing.Size(152, 22);
             this.tsmiBS.Text = "买卖标记";
@@ -85,6 +93,11 @@ namespace owchart_net {
             this.tsmiKLine.Size = new System.Drawing.Size(152, 22);
             this.tsmiKLine.Text = "纯K线界面";
             this.tsmiKLine.Click += new EventHandler(tsmiKLine_Click);
+
+            this.tsmiTeach.Name = "ToolStripMenuItem";
+            this.tsmiTeach.Size = new System.Drawing.Size(152, 22);
+            this.tsmiTeach.Text = "使用教程[新]";
+            this.tsmiTeach.Click += new EventHandler(tsmiTeach_Click);
 
             this.tsmiGuanyu.Name = "ToolStripMenuItem";
             this.tsmiGuanyu.Size = new System.Drawing.Size(152, 22);
@@ -126,6 +139,14 @@ namespace owchart_net {
             this.tsmiMinute.Text = "分时图";
             this.tsmiMinute.Click += new System.EventHandler(this.tsmiMinute_Click);
 
+            String[] strs = new string[] { "多头", "空头" };
+            foreach (String str in strs)
+            {
+                ToolStripMenuItem lineBsButton = new ToolStripMenuItem(str);
+                lineBsButton.Click += new EventHandler(lineBsButton_Click);
+                tsmiLineBS.DropDownItems.Add(lineBsButton);
+            }
+
             //加载指标
             foreach (string enumName in GetSystemIndicators()) {
                 ToolStripMenuItem indicatorButton = new ToolStripMenuItem(enumName);
@@ -152,6 +173,37 @@ namespace owchart_net {
                 }
             }
             ContextMenuStrip = contextMenuStrip1;
+        }
+
+        public List<TradeLine> tradeLines = new List<TradeLine>();
+
+        /// <summary>
+        /// 多头空头
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void lineBsButton_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
+            if (menuItem.Text == "多头")
+            {
+                curPaintLine = "LINEB";
+            }
+            else if (menuItem.Text == "空头")
+            {
+                curPaintLine = "LINES";
+            }
+        }
+
+        /// <summary>
+        /// 打开教程
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tsmiTeach_Click(object sender, EventArgs e)
+        {
+            TeachForm teachForm = new TeachForm();
+            teachForm.Show();
         }
 
         /// <summary>
@@ -236,12 +288,19 @@ namespace owchart_net {
         /// <summary>
         /// 添加画线工具
         /// </summary>
-        /// <param name="sender"></param>
+        /// <param name="sender"></param>f
         /// <param name="e"></param>
         private void plotButton_Click(object sender, EventArgs e) {
             curPaintLine = (sender as ToolStripMenuItem).Tag.ToString();
             if (curPaintLine == "DELETE") {
                 if (SelectedPlot != null) {
+                    if (SelectedPlot is TradeLine)
+                    {
+                        if (tradeLines.Contains(SelectedPlot as TradeLine))
+                        {
+                            tradeLines.Remove(SelectedPlot as TradeLine);
+                        }
+                    }
                     DeletePlot(SelectedPlot);
                     RefreshGraph();
                 }
@@ -329,6 +388,25 @@ namespace owchart_net {
                 SecurityService.GetLatestData(currentCode, ref newData);
                 if (!newData.equal(lastData) && newData.m_volume > 0) {
                     double close = newData.m_close;
+                    //画线交易
+                    for (int i = 0; i < tradeLines.Count; i++)
+                    {
+                        TradeLine trendLine = new TradeLine();
+                        if (trendLine.Bs == "多头")
+                        {
+                            if (close <= trendLine.Value)
+                            {
+                                trendLine.Bs += "已成交";
+                            }
+                        }
+                        else if (trendLine.Bs == "空头")
+                        {
+                            if (close >= trendLine.Value)
+                            {
+                                trendLine.Bs += "已成交";
+                            }
+                        }
+                    }
                     double dVolume = 0;
                     if (lastData.m_code.Length > 0) {
                         dVolume = newData.m_volume - lastData.m_volume;
@@ -389,6 +467,8 @@ namespace owchart_net {
         private System.Windows.Forms.ToolStripMenuItem tsmiGuanyu;
         private System.Windows.Forms.ToolStripMenuItem tsmiBS;
         private System.Windows.Forms.ToolStripMenuItem tsmiKLine;
+        private System.Windows.Forms.ToolStripMenuItem tsmiTeach;
+        private System.Windows.Forms.ToolStripMenuItem tsmiLineBS;
 
 
         /// <summary>
@@ -444,6 +524,42 @@ namespace owchart_net {
         }
 
         /// <summary>
+        /// 追加画线
+        /// </summary>
+        /// <param name="lineColor">颜色</param>
+        /// <param name="type">画线工具类型</param>
+        /// <param name="mp">初始坐标</param>
+        /// <param name="lineWidth">宽度</param>
+        /// <param name="dashPattern">线的类型</param>
+        /// <param name="divID">图层ID</param>
+        /// <returns></returns>
+        public void AddPlot(PlotBase plot, Color lineColor, Color selectedColor, Point mp, int lineWidth, float[] dashPattern, ChartDiv chartDiv)
+        {
+            if (dataSource.RowsCount >= 2)
+            {
+                double value = GetValueByPoint(chartDiv, mp, AttachYScale.Left);
+                if (plot != null)
+                {
+                    plot.Chart = this;
+                    plot.ChartDiv = chartDiv;
+                    plot.LineColor = lineColor;
+                    plot.SelectedColor = selectedColor;
+                    plot.Selected = true;
+                    plot.LineWidth = lineWidth;
+                    plot.Style = dashPattern;
+                    plot.ZOrder = LbCommon.SerialNumber;
+                    bool flag = plot.InitPlot(mp);
+                    if (flag)
+                    {
+                        chartDiv.PlotList.Add(plot);
+                        SelectedPlot = plot;
+                        plot.StartMove();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// 鼠标按下事件
         /// </summary>
         /// <param name="e"></param>
@@ -453,7 +569,22 @@ namespace owchart_net {
             if (curPaintLine != null && curPaintLine.Length > 0) {
                 ChartDiv mouseOverDiv = GetMouseOverDiv();
                 if (mouseOverDiv != null) {
-                    AddPlot(System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, curPaintLine, mp, 1, null, mouseOverDiv);
+                    if (curPaintLine == "LINEB")
+                    {
+                        TradeLine tradeLine = new TradeLine();
+                        tradeLine.Bs = "多头";
+                        AddPlot(tradeLine, System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, mp, 1, null, mouseOverDiv);
+                    }
+                    else if (curPaintLine == "LINES")
+                    {
+                        TradeLine tradeLine = new TradeLine();
+                        tradeLine.Bs = "空头";
+                        AddPlot(tradeLine, System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, mp, 1, null, mouseOverDiv);
+                    }
+                    else
+                    {
+                        AddPlot(System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, curPaintLine, mp, 1, null, mouseOverDiv);
+                    }
                     Cursor = System.Windows.Forms.Cursors.Default;
                     curPaintLine = "";
                     RefreshGraph();
@@ -466,6 +597,7 @@ namespace owchart_net {
         /// </summary>
         public void InitControl() {
             indicators.Clear();
+            tradeLines.Clear();
             RemoveAll();
             if (minuteMode) {
                 AllowDrag = false;
@@ -651,7 +783,6 @@ namespace owchart_net {
                     }
                 }
             }
-
             int indicatorsSize = indicators.Count;
             for (int i = 0; i < indicatorsSize; i++) {
                 indicators[i].OnCalculate(startIndex);

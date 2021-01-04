@@ -400,7 +400,7 @@ namespace owchart_net {
             if (date != null && date.Length > 0) {
                 DateTime dateTime = Convert.ToDateTime(date);
                 data.m_date = (dateTime - new DateTime(1970, 1, 1)).TotalSeconds;
-                //data.m_date = FCTran.GetDateNum(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, dateTime.Second, 0);
+                //data.m_date = FCTran.getDateNum(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, dateTime.Second, 0);
             }
             //¼Û¸ñÐÞÕý
             if (data.m_close != 0) {

@@ -70,13 +70,6 @@ namespace owchart_net {
             chartExtend.ChangeSecurity("600000.SH");
         }
 
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            TeachForm teachForm = new TeachForm();
-            teachForm.Show(this);
-        }
-
         private void indexDiv_MouseDown(object sender, MouseEventArgs e) {
             int width = indexDiv.Width;
             if (e.Location.X < width / 3) {

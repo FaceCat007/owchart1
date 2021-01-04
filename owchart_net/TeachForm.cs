@@ -25,6 +25,7 @@ namespace owchart_net
             listBox1.Items.Add("教程七:如何添加画线?");
             listBox1.Items.Add("教程八:如何创建分时图?");
             listBox1.Items.Add("教程九:如何添加MACD和KDJ指标?");
+            listBox1.Items.Add("教程十:如何添加MA和BOLL指标?");
             listBox1.SelectedIndexChanged += new EventHandler(listBox1_SelectedIndexChanged);
             webBrowser1.Navigate("https://mp.weixin.qq.com/s?__biz=Mzg5OTIzODg2Mw==&mid=2247484604&idx=1&sn=8efeff8a2766e105c0e3743cdaa9f838&chksm=c0571a1cf720930aa1c706a14eeed4e8e2f7a5cb990e066bce52ef53a1c84ed982d54cc9b664&scene=21#wechat_redirect");
         }
@@ -62,6 +63,9 @@ namespace owchart_net
                     break;
                 case 9:
                     webBrowser1.Navigate("https://mp.weixin.qq.com/s?__biz=Mzg5OTIzODg2Mw==&mid=2247484696&idx=1&sn=6d925462041adb940b86c0c6297b5c35&chksm=c0571bb8f72092aed2222d0eb9f26094548db63516315e89727df084618a8146a05bb89591e4&token=523628195&lang=zh_CN#rd");
+                    break;
+                case 10:
+                    webBrowser1.Navigate("https://mp.weixin.qq.com/s?__biz=Mzg5OTIzODg2Mw==&mid=2247484702&idx=1&sn=fe86d9d93a7ff01a96953e5a1152b71c&chksm=c0571bbef72092a8ae87ec6dbe34f4fc26e95ef388b85d88c899e5ffabff3a1d6a114095a791&token=1589326632&lang=zh_CN#rd");
                     break;
             }
         }

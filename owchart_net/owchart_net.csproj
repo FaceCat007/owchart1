@@ -139,6 +139,7 @@
     <Compile Include="TeachForm.Designer.cs">
       <DependentUpon>TeachForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TradeLine.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="logo.ico" />
