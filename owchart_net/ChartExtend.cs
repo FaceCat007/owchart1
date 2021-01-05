@@ -391,7 +391,7 @@ namespace owchart_net {
                     //画线交易
                     for (int i = 0; i < tradeLines.Count; i++)
                     {
-                        TradeLine trendLine = new TradeLine();
+                        TradeLine trendLine = tradeLines[i];
                         if (trendLine.Bs == "多头")
                         {
                             if (close <= trendLine.Value)
@@ -526,6 +526,8 @@ namespace owchart_net {
         /// <summary>
         /// 追加画线
         /// </summary>
+        /// <param name="chart">K线</param>
+        /// <param name="plot">画线</param>
         /// <param name="lineColor">颜色</param>
         /// <param name="type">画线工具类型</param>
         /// <param name="mp">初始坐标</param>
@@ -533,14 +535,15 @@ namespace owchart_net {
         /// <param name="dashPattern">线的类型</param>
         /// <param name="divID">图层ID</param>
         /// <returns></returns>
-        public void AddPlot(PlotBase plot, Color lineColor, Color selectedColor, Point mp, int lineWidth, float[] dashPattern, ChartDiv chartDiv)
+        public static void AddPlot(Chart chart, PlotBase plot, Color lineColor, Color selectedColor, Point mp, int lineWidth, float[] dashPattern, ChartDiv chartDiv)
         {
+            CTableEx dataSource = chart.DataSource;
             if (dataSource.RowsCount >= 2)
             {
-                double value = GetValueByPoint(chartDiv, mp, AttachYScale.Left);
+                double value = chart.GetValueByPoint(chartDiv, mp, AttachYScale.Left);
                 if (plot != null)
                 {
-                    plot.Chart = this;
+                    plot.Chart = chart;
                     plot.ChartDiv = chartDiv;
                     plot.LineColor = lineColor;
                     plot.SelectedColor = selectedColor;
@@ -552,7 +555,7 @@ namespace owchart_net {
                     if (flag)
                     {
                         chartDiv.PlotList.Add(plot);
-                        SelectedPlot = plot;
+                        chart.SelectedPlot = plot;
                         plot.StartMove();
                     }
                 }
@@ -573,13 +576,13 @@ namespace owchart_net {
                     {
                         TradeLine tradeLine = new TradeLine();
                         tradeLine.Bs = "多头";
-                        AddPlot(tradeLine, System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, mp, 1, null, mouseOverDiv);
+                        AddPlot(this, tradeLine, System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, mp, 1, null, mouseOverDiv);
                     }
                     else if (curPaintLine == "LINES")
                     {
                         TradeLine tradeLine = new TradeLine();
                         tradeLine.Bs = "空头";
-                        AddPlot(tradeLine, System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, mp, 1, null, mouseOverDiv);
+                        AddPlot(this, tradeLine, System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, mp, 1, null, mouseOverDiv);
                     }
                     else
                     {
@@ -619,13 +622,13 @@ namespace owchart_net {
                 mainDiv.Title = "分时线";
                 mainDiv.XScale.Visible = false;
                 List<double> scaleSteps = new List<double>();
-                scaleSteps.Add(LbCommon.getDateNum(1970, 1, 1, 10, 0, 0, 0));
-                scaleSteps.Add(LbCommon.getDateNum(1970, 1, 1, 10, 30, 0, 0));
-                scaleSteps.Add(LbCommon.getDateNum(1970, 1, 1, 11, 0, 0, 0));
-                scaleSteps.Add(LbCommon.getDateNum(1970, 1, 1, 11, 30, 0, 0));
-                scaleSteps.Add(LbCommon.getDateNum(1970, 1, 1, 13, 30, 0, 0));
-                scaleSteps.Add(LbCommon.getDateNum(1970, 1, 1, 14, 0, 0, 0));
-                scaleSteps.Add(LbCommon.getDateNum(1970, 1, 1, 14, 30, 0, 0));
+                scaleSteps.Add(LbCommon.GetDateNum(1970, 1, 1, 10, 0, 0, 0));
+                scaleSteps.Add(LbCommon.GetDateNum(1970, 1, 1, 10, 30, 0, 0));
+                scaleSteps.Add(LbCommon.GetDateNum(1970, 1, 1, 11, 0, 0, 0));
+                scaleSteps.Add(LbCommon.GetDateNum(1970, 1, 1, 11, 30, 0, 0));
+                scaleSteps.Add(LbCommon.GetDateNum(1970, 1, 1, 13, 30, 0, 0));
+                scaleSteps.Add(LbCommon.GetDateNum(1970, 1, 1, 14, 0, 0, 0));
+                scaleSteps.Add(LbCommon.GetDateNum(1970, 1, 1, 14, 30, 0, 0));
                 mainDiv.XScale.ScaleSteps = scaleSteps;
                 mainDiv.PaddingBottom = 10;
                 mainDiv.PaddingTop = 10;
