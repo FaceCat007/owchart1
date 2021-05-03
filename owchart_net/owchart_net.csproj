@@ -6,7 +6,7 @@
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{3F38C22E-EA76-4BBA-A022-1DB82072F516}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>owchart_net</RootNamespace>
     <AssemblyName>owchart_net</AssemblyName>
@@ -43,9 +43,6 @@
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
-    <Reference Include="owchart, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -61,11 +58,9 @@
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ChartExtend.cs">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="CStr.cs" />
     <Compile Include="GridExtend.cs">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="IndexDiv.cs">
       <SubType>Component</SubType>
@@ -131,7 +126,6 @@
     <Compile Include="Security.cs" />
     <Compile Include="SecurityService.cs" />
     <Compile Include="ChartExtend2.cs">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="TeachForm.cs">
       <SubType>Form</SubType>
@@ -140,9 +134,21 @@
       <DependentUpon>TeachForm.cs</DependentUpon>
     </Compile>
     <Compile Include="TradeLine.cs" />
+    <Compile Include="FloatDiv.cs">
+    </Compile>
+    <Compile Include="FloatDiv.Designer.cs">
+      <DependentUpon>FloatDiv.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\owchart\owchart.csproj">
+      <Project>{3021284A-6528-492E-A607-FD4A3B716FD9}</Project>
+      <Name>owchart</Name>
+      <Private>False</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -33,6 +33,14 @@ namespace owchart_net {
         /// </summary>
         private System.Windows.Forms.Timer timer = new Timer();
 
+        private bool blackOrWhite = true;
+
+        public bool BlackOrWhite
+        {
+            get { return blackOrWhite; }
+            set { blackOrWhite = value; }
+        }
+
         /// <summary>
         /// 秒表事件
         /// </summary>
@@ -66,15 +74,26 @@ namespace owchart_net {
         /// <param name="price">价格</param>
         /// <param name="comparePrice">比较价格</param>
         /// <returns>颜色</returns>
-        public static Color GetPriceColor(double price, double comparePrice) {
-            if (price != 0) {
-                if (price > comparePrice) {
-                    return Color.FromArgb(255, 80, 80);
-                } else if (price < comparePrice) {
-                    return Color.FromArgb(80, 255, 80);
+        public Color GetPriceColor(double price, double comparePrice) {
+            if (blackOrWhite)
+            {
+                if (price != 0)
+                {
+                    if (price > comparePrice)
+                    {
+                        return Color.FromArgb(255, 80, 80);
+                    }
+                    else if (price < comparePrice)
+                    {
+                        return Color.FromArgb(80, 255, 80);
+                    }
                 }
+                return Color.FromArgb(255, 255, 255);
             }
-            return Color.FromArgb(255, 255, 255);
+            else
+            {
+                return Color.Black;
+            }
         }
 
         /// <summary>
@@ -129,6 +148,10 @@ namespace owchart_net {
             myBuffer = currentContext.Allocate(pe.Graphics, DisplayRectangle);
             g = myBuffer.Graphics;
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+            if (!blackOrWhite)
+            {
+                g.Clear(Color.White);
+            }
 
             int width = Width;
             int height = Height;
@@ -145,6 +168,10 @@ namespace owchart_net {
                 Font font = new Font("微软雅黑", 12);
                 Font indexFont = new Font("微软雅黑", 12);
                 Color grayColor = Color.FromArgb(200, 200, 200);
+                if (!blackOrWhite)
+                {
+                    titleColor = Color.Black;
+                }
                 //上证指数
                 Color indexColor = GetPriceColor(ssLatestData.m_close, ssLatestData.m_lastClose);
                 int left = 1;

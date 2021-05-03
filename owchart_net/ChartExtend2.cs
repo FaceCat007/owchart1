@@ -101,6 +101,8 @@ namespace owchart_net {
             }
             ContextMenuStrip = contextMenuStrip1;
             ChangeCycle();
+
+            UseNewRectangle = true;
         }
 
         /// <summary>
@@ -198,12 +200,30 @@ namespace owchart_net {
             if (curPaintLine != null && curPaintLine.Length > 0) {
                 ChartDiv mouseOverDiv = GetMouseOverDiv();
                 if (mouseOverDiv != null) {
-                    AddPlot(System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, curPaintLine, mp, 1, null, mouseOverDiv);
+                    if (blackOrWhite)
+                    {
+                        AddPlot(System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, curPaintLine, mp, 1, null, mouseOverDiv);
+                    }
+                    else
+                    {
+                        AddPlot(System.Drawing.Color.FromArgb(0, 0, 0), System.Drawing.Color.Black, curPaintLine, mp, 1, null, mouseOverDiv);
+                    }
                     Cursor = System.Windows.Forms.Cursors.Default;
                     curPaintLine = "";
                     RefreshGraph();
                 }
             }
+        }
+
+        private bool blackOrWhite = true;
+
+        /// <summary>
+        /// 黑色或白色
+        /// </summary>
+        public bool BlackOrWhite
+        {
+            get { return blackOrWhite; }
+            set { blackOrWhite = value; }
         }
 
         /// <summary>
@@ -232,13 +252,13 @@ namespace owchart_net {
                 mainDiv.Title = "分时线";
                 mainDiv.XScale.Visible = false;
                 List<double> scaleSteps = new List<double>();
-                scaleSteps.Add(LbCommon.getDateNum(1970, 1, 1, 10, 0, 0, 0));
-                scaleSteps.Add(LbCommon.getDateNum(1970, 1, 1, 10, 30, 0, 0));
-                scaleSteps.Add(LbCommon.getDateNum(1970, 1, 1, 11, 0, 0, 0));
-                scaleSteps.Add(LbCommon.getDateNum(1970, 1, 1, 11, 30, 0, 0));
-                scaleSteps.Add(LbCommon.getDateNum(1970, 1, 1, 13, 30, 0, 0));
-                scaleSteps.Add(LbCommon.getDateNum(1970, 1, 1, 14, 0, 0, 0));
-                scaleSteps.Add(LbCommon.getDateNum(1970, 1, 1, 14, 30, 0, 0));
+                scaleSteps.Add(LbCommon.GetDateNum(1970, 1, 1, 10, 0, 0, 0));
+                scaleSteps.Add(LbCommon.GetDateNum(1970, 1, 1, 10, 30, 0, 0));
+                scaleSteps.Add(LbCommon.GetDateNum(1970, 1, 1, 11, 0, 0, 0));
+                scaleSteps.Add(LbCommon.GetDateNum(1970, 1, 1, 11, 30, 0, 0));
+                scaleSteps.Add(LbCommon.GetDateNum(1970, 1, 1, 13, 30, 0, 0));
+                scaleSteps.Add(LbCommon.GetDateNum(1970, 1, 1, 14, 0, 0, 0));
+                scaleSteps.Add(LbCommon.GetDateNum(1970, 1, 1, 14, 30, 0, 0));
                 mainDiv.XScale.ScaleSteps = scaleSteps;
                 mainDiv.PaddingBottom = 10;
                 mainDiv.PaddingTop = 10;
@@ -255,6 +275,35 @@ namespace owchart_net {
                 barShape.Title = "";
                 barShape.BarStyle = BarStyle.Line;
                 SetBar("成交量", System.Drawing.Color.FromArgb(255, 255, 80), System.Drawing.Color.FromArgb(255, 255, 80));
+                if (!blackOrWhite)
+                {
+                    mainDiv.ForeColor = Color.Black;
+                    mainDiv.BackColor = Color.White;
+                    mainDiv.LeftYScale.TipForeColor = Color.White;
+                    mainDiv.RightYScale.TipForeColor = Color.White;
+                    volumeDiv.LeftYScale.TipForeColor = Color.White;
+                    volumeDiv.RightYScale.TipForeColor = Color.White;
+                    volumeDiv.XScale.TipForeColor = Color.White;
+                    volumeDiv.BackColor = Color.White;
+                    mainDiv.BorderColor = Color.Black;
+                    volumeDiv.BorderColor = Color.Black;
+                    macdDiv.BorderColor = Color.Black;
+                    mainDiv.LeftYScale.ForeColor = Color.Black;
+                    mainDiv.RightYScale.ForeColor = Color.Black;
+                    mainDiv.LeftYScale.ScaleColor = Color.Black;
+                    mainDiv.RightYScale.ScaleColor = Color.Black;
+                    volumeDiv.LeftYScale.ForeColor = Color.Black;
+                    volumeDiv.RightYScale.ForeColor = Color.Black;
+                    volumeDiv.LeftYScale.ScaleColor = Color.Black;
+                    volumeDiv.RightYScale.ScaleColor = Color.Black;
+                    mainDiv.GridColor = Color.Black;
+                    volumeDiv.GridColor = Color.Black;
+                    lineShape.LineColor = Color.Black;
+                    barShape.UpColor = Color.Black;
+                    barShape.DownColor = Color.Black;
+                    volumeDiv.XScale.ForeColor = Color.Black;
+                    volumeDiv.XScale.ScaleColor = Color.Black;
+                }
             } else {
                 AllowDrag = true;
                 DataSource.SetColsCapacity(20);
@@ -304,6 +353,61 @@ namespace owchart_net {
                 div2Indicator = ChangeIndicator(indicatorName);
                 indicators.Add(indBoll);
                 indicators.Add(div2Indicator);
+                if (!blackOrWhite)
+                {
+                    mainDiv.LeftYScale.TipForeColor = Color.White;
+                    mainDiv.RightYScale.TipForeColor = Color.White;
+                    volumeDiv.LeftYScale.TipForeColor = Color.White;
+                    volumeDiv.RightYScale.TipForeColor = Color.White;
+                    mainDiv.ForeColor = Color.Black;
+                    mainDiv.BackColor = Color.White;
+                    volumeDiv.BackColor = Color.White;
+                    macdDiv.BackColor = Color.White;
+                    mainDiv.BorderColor = Color.Black;
+                    volumeDiv.BorderColor = Color.Black;
+                    macdDiv.BorderColor = Color.Black;
+                    mainDiv.LeftYScale.ForeColor = Color.Black;
+                    mainDiv.RightYScale.ForeColor = Color.Black;
+                    mainDiv.LeftYScale.ScaleColor = Color.Black;
+                    mainDiv.RightYScale.ScaleColor = Color.Black;
+                    volumeDiv.LeftYScale.ForeColor = Color.Black;
+                    volumeDiv.RightYScale.ForeColor = Color.Black;
+                    volumeDiv.LeftYScale.ScaleColor = Color.Black;
+                    volumeDiv.RightYScale.ScaleColor = Color.Black;
+                    macdDiv.LeftYScale.ForeColor = Color.Black;
+                    macdDiv.RightYScale.ForeColor = Color.Black;
+                    macdDiv.LeftYScale.ScaleColor = Color.Black;
+                    macdDiv.RightYScale.ScaleColor = Color.Black;
+                    macdDiv.XScale.ForeColor = Color.Black;
+                    macdDiv.XScale.ScaleColor = Color.Black;
+                    mainDiv.GridColor = Color.Black;
+                    volumeDiv.GridColor = Color.Black;
+                    macdDiv.GridColor = Color.Black;
+
+                    candleShape.UpColor = Color.Black;
+                    candleShape.DownColor = Color.Black;
+                    barShape.UpColor = Color.Black;
+                    barShape.DownColor = Color.Black;
+
+                    candleShape.HighTitleColor = Color.Black;
+                    candleShape.LowTitleColor = Color.Black;
+                    candleShape.CloseTitleColor = Color.Black;
+                    candleShape.OpenTitleColor = Color.Black;
+                    List<BaseShape> shapes = indBoll.GetShapeList();
+                    for (int i = 0; i < shapes.Count; i++)
+                    {
+                        BaseShape bShape = shapes[i] as BaseShape;
+                        if (bShape is BarShape)
+                        {
+                            (bShape as BarShape).DownColor = Color.Black;
+                            (bShape as BarShape).UpColor = Color.Black;
+                        }
+                        else if (bShape is LineShape)
+                        {
+                            (bShape as LineShape).LineColor = Color.Black;
+                        }
+                    }
+                }
             }
         }
 
@@ -369,14 +473,32 @@ namespace owchart_net {
                     DataSource.Set2(index, COLUMN_HIGH, data.high);
                     DataSource.Set2(index, COLUMN_LOW, data.low);
                     DataSource.Set2(index, COLUMN_CLOSE, data.close);
-                    if (data.open > data.close) {
+                    if (data.open > data.close)
+                    {
                         DataSource.Set2(index, barVolume.StyleField, 0);
                         DataSource.Set2(index, candleShape.StyleField, 0);
-                        DataSource.Set2(index, barVolume.ColorField, System.Drawing.Color.FromArgb(80, 255, 255).ToArgb());
-                    } else {
+                        if (blackOrWhite)
+                        {
+                            DataSource.Set2(index, barVolume.ColorField, System.Drawing.Color.FromArgb(80, 255, 255).ToArgb());
+                        }
+                        else
+                        {
+                            DataSource.Set2(index, barVolume.ColorField, System.Drawing.Color.FromArgb(0, 0, 0).ToArgb());
+                        }
+
+                    }
+                    else
+                    {
                         DataSource.Set2(index, barVolume.StyleField, 1);
                         DataSource.Set2(index, candleShape.StyleField, 1);
-                        DataSource.Set2(index, barVolume.ColorField, System.Drawing.Color.FromArgb(255, 80, 80).ToArgb());
+                        if (blackOrWhite)
+                        {
+                            DataSource.Set2(index, barVolume.ColorField, System.Drawing.Color.FromArgb(255, 80, 80).ToArgb());
+                        }
+                        else
+                        {
+                            DataSource.Set2(index, barVolume.ColorField, System.Drawing.Color.FromArgb(0, 0, 0).ToArgb());
+                        }
                     }
                 }
             }
@@ -560,6 +682,23 @@ namespace owchart_net {
                 div2Indicator.OnCalculate(0);
                 RefreshGraph();
             }
+            if (!blackOrWhite)
+            {
+                List<BaseShape> shapes = indicator.GetShapeList();
+                for (int i = 0; i < shapes.Count; i++)
+                {
+                    BaseShape bShape = shapes[i] as BaseShape;
+                    if (bShape is BarShape)
+                    {
+                        (bShape as BarShape).DownColor = Color.Black;
+                        (bShape as BarShape).UpColor = Color.Black;
+                    }
+                    else if (bShape is LineShape)
+                    {
+                        (bShape as LineShape).LineColor = Color.Black;
+                    }
+                }
+            }
             return indicator;
         }
 
@@ -594,6 +733,25 @@ namespace owchart_net {
                 datas.Add(securityData);
             }
             return datas;
+        }
+
+        public override Color GetPriceColor(double value1, double value2)
+        {
+            if (blackOrWhite)
+            {
+                if (value1 >= value2)
+                {
+                    return Color.FromArgb(255, 80, 80);
+                }
+                else
+                {
+                    return Color.FromArgb(80, 255, 80);
+                }
+            }
+            else
+            {
+                return Color.Black;
+            }
         }
 
         /// <summary>

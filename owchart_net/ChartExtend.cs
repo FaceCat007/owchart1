@@ -173,6 +173,8 @@ namespace owchart_net {
                 }
             }
             ContextMenuStrip = contextMenuStrip1;
+
+            UseNewRectangle = true;
         }
 
         public List<TradeLine> tradeLines = new List<TradeLine>();
@@ -242,27 +244,70 @@ namespace owchart_net {
                         if (rdx == 0) {
                             DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_LOW));
                             DataSource.Set2(i, lineShape.StyleField, 4);
-                            DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
+                            if (blackOrWhite)
+                            {
+                                DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
+                            }
+                            else
+                            {
+                                DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(0, 0, 0).ToArgb());
+                            }
+                            
                         } else if (rdx == 1) {
                             DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_HIGH));
                             DataSource.Set2(i, lineShape.StyleField, 5);
-                            DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(255, 80, 80).ToArgb());
+                            if (blackOrWhite)
+                            {
+                                DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
+                            }
+                            else
+                            {
+                                DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(0, 0, 0).ToArgb());
+                            }
                         } else if (rdx == 2) {
                             DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_LOW));
                             DataSource.Set2(i, lineShape.StyleField, 6);
-                            DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
+                            if (blackOrWhite)
+                            {
+                                DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
+                            }
+                            else
+                            {
+                                DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(0, 0, 0).ToArgb());
+                            }
                         } else if (rdx == 3) {
                             DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_HIGH));
                             DataSource.Set2(i, lineShape.StyleField, 7);
-                            DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(255, 80, 80).ToArgb());
+                            if (blackOrWhite)
+                            {
+                                DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
+                            }
+                            else
+                            {
+                                DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(0, 0, 0).ToArgb());
+                            }
                         } else if (rdx == 4) {
                             DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_LOW));
                             DataSource.Set2(i, lineShape.StyleField, 8);
-                            DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
+                            if (blackOrWhite)
+                            {
+                                DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
+                            }
+                            else
+                            {
+                                DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(0, 0, 0).ToArgb());
+                            }
                         } else if (rdx == 5) {
                             DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_HIGH));
                             DataSource.Set2(i, lineShape.StyleField, 9);
-                            DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(255, 80, 80).ToArgb());
+                            if (blackOrWhite)
+                            {
+                                DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
+                            }
+                            else
+                            {
+                                DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(0, 0, 0).ToArgb());
+                            }
                         }
                     }
                     RefreshGraph();
@@ -576,23 +621,55 @@ namespace owchart_net {
                     {
                         TradeLine tradeLine = new TradeLine();
                         tradeLine.Bs = "多头";
-                        AddPlot(this, tradeLine, System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, mp, 1, null, mouseOverDiv);
+                        if (blackOrWhite)
+                        {
+                            AddPlot(this, tradeLine, System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, mp, 1, null, mouseOverDiv);
+                        }
+                        else
+                        {
+                            AddPlot(this, tradeLine, System.Drawing.Color.FromArgb(0, 0, 0), System.Drawing.Color.Black, mp, 1, null, mouseOverDiv);
+                        }
                     }
                     else if (curPaintLine == "LINES")
                     {
                         TradeLine tradeLine = new TradeLine();
                         tradeLine.Bs = "空头";
-                        AddPlot(this, tradeLine, System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, mp, 1, null, mouseOverDiv);
+                        if (blackOrWhite)
+                        {
+                            AddPlot(this, tradeLine, System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, mp, 1, null, mouseOverDiv);
+                        }
+                        else
+                        {
+                            AddPlot(this, tradeLine, System.Drawing.Color.FromArgb(0, 0, 0), System.Drawing.Color.Black, mp, 1, null, mouseOverDiv);
+                        }
                     }
                     else
                     {
-                        AddPlot(System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, curPaintLine, mp, 1, null, mouseOverDiv);
+                        if (blackOrWhite)
+                        {
+                            AddPlot(System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, curPaintLine, mp, 1, null, mouseOverDiv);
+                        }
+                        else
+                        {
+                            AddPlot(System.Drawing.Color.FromArgb(0, 0, 0), System.Drawing.Color.Black, curPaintLine, mp, 1, null, mouseOverDiv);
+                        }
                     }
                     Cursor = System.Windows.Forms.Cursors.Default;
                     curPaintLine = "";
                     RefreshGraph();
                 }
             }
+        }
+
+        private bool blackOrWhite = true;
+
+        /// <summary>
+        /// 黑色或白色
+        /// </summary>
+        public bool BlackOrWhite
+        {
+            get { return blackOrWhite; }
+            set { blackOrWhite = value; }
         }
 
         /// <summary>
@@ -645,6 +722,36 @@ namespace owchart_net {
                 barShape.Title = "";
                 barShape.BarStyle = BarStyle.Line;
                 SetBar("成交量", System.Drawing.Color.FromArgb(255, 255, 80), System.Drawing.Color.FromArgb(255, 255, 80));
+
+                if (!blackOrWhite)
+                {
+                    mainDiv.ForeColor = Color.Black;
+                    mainDiv.BackColor = Color.White;
+                    mainDiv.LeftYScale.TipForeColor = Color.White;
+                    mainDiv.RightYScale.TipForeColor = Color.White;
+                    volumeDiv.LeftYScale.TipForeColor = Color.White;
+                    volumeDiv.RightYScale.TipForeColor = Color.White;
+                    volumeDiv.XScale.TipForeColor = Color.White;
+                    volumeDiv.BackColor = Color.White;
+                    mainDiv.BorderColor = Color.Black;
+                    volumeDiv.BorderColor = Color.Black;
+                    macdDiv.BorderColor = Color.Black;
+                    mainDiv.LeftYScale.ForeColor = Color.Black;
+                    mainDiv.RightYScale.ForeColor = Color.Black;
+                    mainDiv.LeftYScale.ScaleColor = Color.Black;
+                    mainDiv.RightYScale.ScaleColor = Color.Black;
+                    volumeDiv.LeftYScale.ForeColor = Color.Black;
+                    volumeDiv.RightYScale.ForeColor = Color.Black;
+                    volumeDiv.LeftYScale.ScaleColor = Color.Black;
+                    volumeDiv.RightYScale.ScaleColor = Color.Black;
+                    mainDiv.GridColor = Color.Black;
+                    volumeDiv.GridColor = Color.Black;
+                    lineShape.LineColor = Color.Black;
+                    barShape.UpColor = Color.Black;
+                    barShape.DownColor = Color.Black;
+                    volumeDiv.XScale.ForeColor = Color.Black;
+                    volumeDiv.XScale.ScaleColor = Color.Black;
+                }
             } else {
                 AllowDrag = true;
                 DataSource.SetColsCapacity(20);
@@ -659,8 +766,8 @@ namespace owchart_net {
                 mainDiv = AddChartDiv(60);
                 mainDiv.Title = cycle.ToString() + "分钟线";
                 mainDiv.XScale.Visible = false;
-                mainDiv.PaddingBottom = 10;
-                mainDiv.PaddingTop = 10;
+                mainDiv.PaddingBottom = 20;
+                mainDiv.PaddingTop = 20;
                 //mainDiv.LeftYScale.System = VScaleSystem.Logarithmic;
                 mainDiv.RightYScale.ScaleType = YScaleType.Percent;
                 CandleShape candleShape = AddCandle("K线", COLUMN_OPEN, COLUMN_HIGH, COLUMN_LOW, COLUMN_CLOSE, mainDiv);
@@ -694,6 +801,61 @@ namespace owchart_net {
                 div2Indicator = ChangeIndicator(indicatorName);
                 indicators.Add(indBoll);
                 indicators.Add(div2Indicator);
+                if (!blackOrWhite)
+                {
+                    mainDiv.LeftYScale.TipForeColor = Color.White;
+                    mainDiv.RightYScale.TipForeColor = Color.White;
+                    volumeDiv.LeftYScale.TipForeColor = Color.White;
+                    volumeDiv.RightYScale.TipForeColor = Color.White;
+                    mainDiv.ForeColor = Color.Black;
+                    mainDiv.BackColor = Color.White;
+                    volumeDiv.BackColor = Color.White;
+                    macdDiv.BackColor = Color.White;
+                    mainDiv.BorderColor = Color.Black;
+                    volumeDiv.BorderColor = Color.Black;
+                    macdDiv.BorderColor = Color.Black;
+                    mainDiv.LeftYScale.ForeColor = Color.Black;
+                    mainDiv.RightYScale.ForeColor = Color.Black;
+                    mainDiv.LeftYScale.ScaleColor = Color.Black;
+                    mainDiv.RightYScale.ScaleColor = Color.Black;
+                    volumeDiv.LeftYScale.ForeColor = Color.Black;
+                    volumeDiv.RightYScale.ForeColor = Color.Black;
+                    volumeDiv.LeftYScale.ScaleColor = Color.Black;
+                    volumeDiv.RightYScale.ScaleColor = Color.Black;
+                    macdDiv.LeftYScale.ForeColor = Color.Black;
+                    macdDiv.RightYScale.ForeColor = Color.Black;
+                    macdDiv.LeftYScale.ScaleColor = Color.Black;
+                    macdDiv.RightYScale.ScaleColor = Color.Black;
+                    macdDiv.XScale.ForeColor = Color.Black;
+                    macdDiv.XScale.ScaleColor = Color.Black;
+                    mainDiv.GridColor = Color.Black;
+                    volumeDiv.GridColor = Color.Black;
+                    macdDiv.GridColor = Color.Black;
+
+                    candleShape.UpColor = Color.Black;
+                    candleShape.DownColor = Color.Black;
+                    barShape.UpColor = Color.Black;
+                    barShape.DownColor = Color.Black;
+
+                    candleShape.HighTitleColor = Color.Black;
+                    candleShape.LowTitleColor = Color.Black;
+                    candleShape.CloseTitleColor = Color.Black;
+                    candleShape.OpenTitleColor = Color.Black;
+                    List<BaseShape> shapes = indBoll.GetShapeList();
+                    for (int i = 0; i < shapes.Count; i++)
+                    {
+                        BaseShape bShape = shapes[i] as BaseShape;
+                        if (bShape is BarShape)
+                        {
+                            (bShape as BarShape).DownColor = Color.Black;
+                            (bShape as BarShape).UpColor = Color.Black;
+                        }
+                        else if (bShape is LineShape)
+                        {
+                            (bShape as LineShape).LineColor = Color.Black;
+                        }
+                    }
+                }
             }
         }
 
@@ -778,11 +940,26 @@ namespace owchart_net {
                     if (data.open > data.close) {
                         DataSource.Set2(index, barVolume.StyleField, 0);
                         DataSource.Set2(index, candleShape.StyleField, 0);
-                        DataSource.Set2(index, barVolume.ColorField, System.Drawing.Color.FromArgb(80, 255, 255).ToArgb());
+                        if (blackOrWhite)
+                        {
+                            DataSource.Set2(index, barVolume.ColorField, System.Drawing.Color.FromArgb(80, 255, 255).ToArgb());
+                        }
+                        else
+                        {
+                            DataSource.Set2(index, barVolume.ColorField, System.Drawing.Color.FromArgb(0, 0, 0).ToArgb());
+                        }
+                        
                     } else {
                         DataSource.Set2(index, barVolume.StyleField, 1);
                         DataSource.Set2(index, candleShape.StyleField, 1);
-                        DataSource.Set2(index, barVolume.ColorField, System.Drawing.Color.FromArgb(255, 80, 80).ToArgb());
+                        if (blackOrWhite)
+                        {
+                            DataSource.Set2(index, barVolume.ColorField, System.Drawing.Color.FromArgb(255, 80, 80).ToArgb());
+                        }
+                        else
+                        {
+                            DataSource.Set2(index, barVolume.ColorField, System.Drawing.Color.FromArgb(0, 0, 0).ToArgb());
+                        }  
                     }
                 }
             }
@@ -954,6 +1131,23 @@ namespace owchart_net {
                 div2Indicator.OnCalculate(0);
                 RefreshGraph();
             }
+            if (!blackOrWhite)
+            {
+                List<BaseShape> shapes = indicator.GetShapeList();
+                for (int i = 0; i < shapes.Count; i++)
+                {
+                    BaseShape bShape = shapes[i] as BaseShape;
+                    if (bShape is BarShape)
+                    {
+                        (bShape as BarShape).DownColor = Color.Black;
+                        (bShape as BarShape).UpColor = Color.Black;
+                    }
+                    else if (bShape is LineShape)
+                    {
+                        (bShape as LineShape).LineColor = Color.Black;
+                    }
+                }
+            }
             return indicator;
         }
 
@@ -988,6 +1182,25 @@ namespace owchart_net {
                 datas.Add(securityData);
             }
             return datas;
+        }
+
+        public override Color GetPriceColor(double value1, double value2)
+        {
+            if (blackOrWhite)
+            {
+                if (value1 >= value2)
+                {
+                    return Color.FromArgb(255, 80, 80);
+                }
+                else
+                {
+                    return Color.FromArgb(80, 255, 80);
+                }
+            }
+            else
+            {
+                return Color.Black;
+            }
         }
 
         protected override void OnKeyDown(KeyEventArgs e) {

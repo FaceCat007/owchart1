@@ -134,21 +134,43 @@ namespace owchart_net {
             }
         }
 
+        private bool blackOrWhite = true;
+
+        /// <summary>
+        /// 黑色或白色
+        /// </summary>
+        public bool BlackOrWhite
+        {
+            get { return blackOrWhite; }
+            set { blackOrWhite = value; }
+        }
+
         /// <summary>
         /// 根据价格获取颜色
         /// </summary>
         /// <param name="price">价格</param>
         /// <param name="comparePrice">比较价格</param>
         /// <returns>颜色</returns>
-        public static Color GetPriceColor(double price, double comparePrice) {
-            if (price != 0) {
-                if (price > comparePrice) {
-                    return Color.FromArgb(255, 80, 80);
-                } else if (price < comparePrice) {
-                    return Color.FromArgb(80, 255, 80);
+        public Color GetPriceColor(double price, double comparePrice) {
+            if (blackOrWhite)
+            {
+                if (price != 0)
+                {
+                    if (price > comparePrice)
+                    {
+                        return Color.FromArgb(255, 80, 80);
+                    }
+                    else if (price < comparePrice)
+                    {
+                        return Color.FromArgb(80, 255, 80);
+                    }
                 }
+                return Color.FromArgb(255, 255, 255);
             }
-            return Color.FromArgb(255, 255, 255);
+            else
+            {
+                return Color.Black;
+            }
         }
 
         /// <summary>
@@ -182,6 +204,10 @@ namespace owchart_net {
             myBuffer = currentContext.Allocate(pe.Graphics, DisplayRectangle);
             g = myBuffer.Graphics;
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+            if (!blackOrWhite)
+            {
+                g.Clear(Color.White);
+            }
             
             SecurityLatestData latestData = new SecurityLatestData();
             Security security = new Security();
@@ -224,6 +250,10 @@ namespace owchart_net {
                 font = new Font("微软雅黑", 14, FontStyle.Bold);
                 //画股票代码
                 Color yellowColor = Color.FromArgb(255, 255, 80);
+                if (!blackOrWhite)
+                {
+                    yellowColor = Color.Black;
+                }
                 if (latestData.m_code != null && latestData.m_code.Length > 0) {
                     double close = latestData.m_close, open = latestData.m_open, high = latestData.m_high, low = latestData.m_low, lastClose = latestData.m_lastClose;
                     if (close == 0) {
@@ -341,7 +371,14 @@ namespace owchart_net {
                             upPrice = lastClose * 1.05;
                         }
                     }
-                    DrawUnderLineNum(g, upPrice, digit, font, Color.FromArgb(255, 80, 80), true, 45, top + 80);
+                    if (blackOrWhite)
+                    {
+                        DrawUnderLineNum(g, upPrice, digit, font, Color.FromArgb(255, 80, 80), true, 45, top + 80);
+                    }
+                    else
+                    {
+                        DrawUnderLineNum(g, upPrice, digit, font, Color.FromArgb(0, 0, 0), true, 45, top + 80);
+                    }
                     //跌停
                     double downPrice = lastClose * 0.9;
                     if (securityName != null && securityName.Length > 0) {
@@ -349,7 +386,14 @@ namespace owchart_net {
                             downPrice = lastClose * 0.95;
                         }
                     }
-                    DrawUnderLineNum(g, downPrice, digit, font, Color.FromArgb(80, 255, 80), true, 155, top + 80);
+                    if (blackOrWhite)
+                    {
+                        DrawUnderLineNum(g, downPrice, digit, font, Color.FromArgb(80, 255, 80), true, 155, top + 80);
+                    }
+                    else
+                    {
+                        DrawUnderLineNum(g, downPrice, digit, font, Color.FromArgb(0, 0, 0), true, 155, top + 80);
+                    }
                     //外盘
                     double outerVol = latestData.m_outerVol;
                     unit = "";
@@ -360,9 +404,21 @@ namespace owchart_net {
                         outerVol /= 10000;
                         unit = "万";
                     }
-                    cleft = DrawUnderLineNum(g, outerVol, unit.Length > 0 ? digit : 0, font, Color.FromArgb(255, 80, 80), false, 45, top + 100);
-                    if (unit.Length > 0) {
-                        DrawText(g, unit, Color.FromArgb(255, 80, 80), font, cleft + 47, top + 100);
+                    if (blackOrWhite)
+                    {
+                        cleft = DrawUnderLineNum(g, outerVol, unit.Length > 0 ? digit : 0, font, Color.FromArgb(255, 80, 80), false, 45, top + 100);
+                        if (unit.Length > 0)
+                        {
+                            DrawText(g, unit, Color.FromArgb(255, 80, 80), font, cleft + 47, top + 100);
+                        }
+                    }
+                    else
+                    {
+                        cleft = DrawUnderLineNum(g, outerVol, unit.Length > 0 ? digit : 0, font, Color.FromArgb(0, 0, 0), false, 45, top + 100);
+                        if (unit.Length > 0)
+                        {
+                            DrawText(g, unit, Color.FromArgb(0, 0, 0), font, cleft + 47, top + 100);
+                        }
                     }
                     unit = "";
                     double innerVol = latestData.m_innerVol;
@@ -373,23 +429,58 @@ namespace owchart_net {
                         innerVol /= 10000;
                         unit = "万";
                     }
-                    //内盘
-                    cleft = DrawUnderLineNum(g, innerVol, unit.Length > 0 ? digit : 0, font, Color.FromArgb(80, 255, 80), true, 155, top + 100);
-                    if (unit.Length > 0) {
-                        DrawText(g, unit, Color.FromArgb(80, 255, 80), font, cleft + 157, top + 100);
+                    if (blackOrWhite)
+                    {
+                        //内盘
+                        cleft = DrawUnderLineNum(g, innerVol, unit.Length > 0 ? digit : 0, font, Color.FromArgb(80, 255, 80), true, 155, top + 100);
+                        if (unit.Length > 0)
+                        {
+                            DrawText(g, unit, Color.FromArgb(80, 255, 80), font, cleft + 157, top + 100);
+                        }
+                    }
+                    else
+                    {
+                        //内盘
+                        cleft = DrawUnderLineNum(g, innerVol, unit.Length > 0 ? digit : 0, font, Color.FromArgb(0, 0, 0), true, 155, top + 100);
+                        if (unit.Length > 0)
+                        {
+                            DrawText(g, unit, Color.FromArgb(0, 0, 0), font, cleft + 157, top + 100);
+                        }
                     }
                 }
                 font = new Font("微软雅黑", 14);
-                //股票代码
-                if (securityCode != null && securityCode.Length > 0) {
-                    DrawText(g, securityCode, Color.FromArgb(255, 255, 255), font, 2, 4);
+                if (blackOrWhite)
+                {
+                    //股票代码
+                    if (securityCode != null && securityCode.Length > 0)
+                    {
+                        DrawText(g, securityCode, Color.FromArgb(255, 255, 255), font, 2, 4);
+                    }
+                    //股票名称
+                    if (securityName != null && securityName.Length > 0)
+                    {
+                        DrawText(g, securityName, Color.FromArgb(80, 255, 255), font, 110, 3);
+                    }
                 }
-                //股票名称
-                if (securityName != null && securityName.Length > 0) {
-                    DrawText(g, securityName, Color.FromArgb(80, 255, 255), font, 110, 3);
+                else
+                {
+                    //股票代码
+                    if (securityCode != null && securityCode.Length > 0)
+                    {
+                        DrawText(g, securityCode, Color.FromArgb(0, 0, 0), font, 2, 4);
+                    }
+                    //股票名称
+                    if (securityName != null && securityName.Length > 0)
+                    {
+                        DrawText(g, securityName, Color.FromArgb(0, 0, 0), font, 110, 3);
+                    }
                 }
                 //画边框
                 Color frameColor = Color.FromArgb(150, 0, 0);
+                if (!blackOrWhite)
+                {
+                    frameColor = Color.Black;
+                }
                 Pen framePen = new Pen(frameColor);
                 g.DrawLine(framePen, 0, 0, 0, height);
                 g.DrawLine(framePen, 0, 30, width, 30);

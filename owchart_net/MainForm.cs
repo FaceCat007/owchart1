@@ -68,9 +68,47 @@ namespace owchart_net {
             panel6.Controls.Add(chartExtend);
             latestDiv.SecurityCode = "600000.SH";
             chartExtend.ChangeSecurity("600000.SH");
+
+            ////浮动层
+            //FloatDiv floatDiv = new FloatDiv();
+            //floatDiv.GridLineColor = Color.Red;
+            //floatDiv.Width = 60;
+            //floatDiv.Dock = DockStyle.Right;
+            //Controls.Add(floatDiv);
+
+            //floatDiv.HeaderHeight = 0;
+            //floatDiv.AddColumn(new GridColumn("1"));
+            //floatDiv.UpdateGrid();
+
+            //String[] strs = new String[] { "功能1", "功能2", "功能3", "功能4", "功能5", "功能6", "功能7", "功能8", "功能9", "功能10" };
+            //for (int i = 0; i < strs.Length; i++)
+            //{
+            //    GridRow gridRow = new GridRow();
+            //    gridRow.Height = 60;
+            //    floatDiv.AddRow(gridRow);
+            //    GridStringCell cell = new GridStringCell(strs[i]);
+            //    cell.Style = new GridCellStyle();
+            //    cell.Style.Font = new Font("微软雅黑", 12, FontStyle.Regular);
+            //    gridRow.AddCell(0, cell);
+            //}
+            //floatDiv.UpdateGrid();
+            //floatDiv.Invalidate();
+            //floatDiv.CellClick += new GridCellMouseEvent(floatDiv_CellClick);
         }
 
-        private void indexDiv_MouseDown(object sender, MouseEventArgs e) {
+        /// <summary>
+        /// 单元格点击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="cell"></param>
+        /// <param name="e"></param>
+        private void floatDiv_CellClick(object sender, GridCell cell, MouseEventArgs e)
+        {
+            MessageBox.Show(cell.GetString());
+        }
+
+        private void indexDiv_MouseDown(object sender, MouseEventArgs e)
+        {
             int width = indexDiv.Width;
             if (e.Location.X < width / 3) {
                 latestDiv.SecurityCode = "000001.SH";

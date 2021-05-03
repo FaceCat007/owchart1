@@ -67,7 +67,15 @@ namespace owchart_net {
                     if (i > 1) {
                         cellStyle.Align = HorizontalAlign.Right;
                     }
-                    cellStyle.TextColor = Color.FromArgb(255, 255, 255);
+                    if (blackOrWhite)
+                    {
+                        cellStyle.TextColor = Color.FromArgb(255, 255, 255);
+                    }
+                    else
+                    {
+                        cellStyle.TextColor = Color.Black;
+                    }
+
                     cellStyle.Font = new Font("微软雅黑", 12);
                     row.Cells[i].Style = cellStyle;
                 }
@@ -80,6 +88,21 @@ namespace owchart_net {
             timer.Tick += new EventHandler(timer_Tick);
             timer.Interval = 300;
             timer.Enabled = true;
+            if (!blackOrWhite)
+            {
+                for (int i = 0; i < Columns.Count; i++)
+                {
+                    GridColumn gridColumn = Columns[i];
+                    gridColumn.BackColor = Color.White;
+                    gridColumn.TextColor = Color.Black;
+                }
+                BackColor = Color.White;
+                GridRowStyle gridRowStyle = RowStyle;
+                gridRowStyle.BackColor = Color.White;
+                gridRowStyle.TextColor = Color.Black;
+                gridRowStyle.SelectedBackColor = Color.FromArgb(200, 200, 200);
+                gridRowStyle.HoveredBackColor = Color.Empty;
+            }
         }
 
         /// <summary>
@@ -97,21 +120,44 @@ namespace owchart_net {
         /// </summary>
         private List<GridCell> updateCells = new List<GridCell>();
 
+
+        private bool blackOrWhite = true;
+
+        /// <summary>
+        /// 黑色或白色
+        /// </summary>
+        public bool BlackOrWhite
+        {
+            get { return blackOrWhite; }
+            set { blackOrWhite = value; }
+        }
+
         /// <summary>
         /// 根据价格获取颜色
         /// </summary>
         /// <param name="price">价格</param>
         /// <param name="comparePrice">比较价格</param>
         /// <returns>颜色</returns>
-        public static Color GetPriceColor(double price, double comparePrice) {
-            if (price != 0) {
-                if (price > comparePrice) {
-                    return Color.FromArgb(255, 80, 80);
-                } else if (price < comparePrice) {
-                    return Color.FromArgb(80, 255, 80);
+        public Color GetPriceColor(double price, double comparePrice) {
+            if (blackOrWhite)
+            {
+                if (price != 0)
+                {
+                    if (price > comparePrice)
+                    {
+                        return Color.FromArgb(255, 80, 80);
+                    }
+                    else if (price < comparePrice)
+                    {
+                        return Color.FromArgb(80, 255, 80);
+                    }
                 }
+                return Color.FromArgb(255, 255, 255);
             }
-            return Color.FromArgb(255, 255, 255);
+            else
+            {
+                return Color.Black;
+            }
         }
 
         /// <summary>
