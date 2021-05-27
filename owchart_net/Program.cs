@@ -5,8 +5,19 @@ using Newtonsoft.Json;
 
 namespace owchart_net
 {
-    static class Program
+    public static class Program
     {
+        private static bool blackOrWhite = true;
+
+        /// <summary>
+        /// 黑色或白色
+        /// </summary>
+        public static bool BlackOrWhite
+        {
+            get { return blackOrWhite; }
+            set { blackOrWhite = value; }
+        }
+
         /// <summary>
         /// 应用程序的主入口点。
         /// </summary>

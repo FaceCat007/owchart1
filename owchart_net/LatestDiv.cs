@@ -134,17 +134,6 @@ namespace owchart_net {
             }
         }
 
-        private bool blackOrWhite = true;
-
-        /// <summary>
-        /// 黑色或白色
-        /// </summary>
-        public bool BlackOrWhite
-        {
-            get { return blackOrWhite; }
-            set { blackOrWhite = value; }
-        }
-
         /// <summary>
         /// 根据价格获取颜色
         /// </summary>
@@ -152,7 +141,7 @@ namespace owchart_net {
         /// <param name="comparePrice">比较价格</param>
         /// <returns>颜色</returns>
         public Color GetPriceColor(double price, double comparePrice) {
-            if (blackOrWhite)
+            if (Program.BlackOrWhite)
             {
                 if (price != 0)
                 {
@@ -204,7 +193,7 @@ namespace owchart_net {
             myBuffer = currentContext.Allocate(pe.Graphics, DisplayRectangle);
             g = myBuffer.Graphics;
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
-            if (!blackOrWhite)
+            if (!Program.BlackOrWhite)
             {
                 g.Clear(Color.White);
             }
@@ -250,7 +239,7 @@ namespace owchart_net {
                 font = new Font("微软雅黑", 14, FontStyle.Bold);
                 //画股票代码
                 Color yellowColor = Color.FromArgb(255, 255, 80);
-                if (!blackOrWhite)
+                if (!Program.BlackOrWhite)
                 {
                     yellowColor = Color.Black;
                 }
@@ -371,7 +360,7 @@ namespace owchart_net {
                             upPrice = lastClose * 1.05;
                         }
                     }
-                    if (blackOrWhite)
+                    if (Program.BlackOrWhite)
                     {
                         DrawUnderLineNum(g, upPrice, digit, font, Color.FromArgb(255, 80, 80), true, 45, top + 80);
                     }
@@ -386,7 +375,7 @@ namespace owchart_net {
                             downPrice = lastClose * 0.95;
                         }
                     }
-                    if (blackOrWhite)
+                    if (Program.BlackOrWhite)
                     {
                         DrawUnderLineNum(g, downPrice, digit, font, Color.FromArgb(80, 255, 80), true, 155, top + 80);
                     }
@@ -404,7 +393,7 @@ namespace owchart_net {
                         outerVol /= 10000;
                         unit = "万";
                     }
-                    if (blackOrWhite)
+                    if (Program.BlackOrWhite)
                     {
                         cleft = DrawUnderLineNum(g, outerVol, unit.Length > 0 ? digit : 0, font, Color.FromArgb(255, 80, 80), false, 45, top + 100);
                         if (unit.Length > 0)
@@ -429,7 +418,7 @@ namespace owchart_net {
                         innerVol /= 10000;
                         unit = "万";
                     }
-                    if (blackOrWhite)
+                    if (Program.BlackOrWhite)
                     {
                         //内盘
                         cleft = DrawUnderLineNum(g, innerVol, unit.Length > 0 ? digit : 0, font, Color.FromArgb(80, 255, 80), true, 155, top + 100);
@@ -449,7 +438,7 @@ namespace owchart_net {
                     }
                 }
                 font = new Font("微软雅黑", 14);
-                if (blackOrWhite)
+                if (Program.BlackOrWhite)
                 {
                     //股票代码
                     if (securityCode != null && securityCode.Length > 0)
@@ -477,7 +466,7 @@ namespace owchart_net {
                 }
                 //画边框
                 Color frameColor = Color.FromArgb(150, 0, 0);
-                if (!blackOrWhite)
+                if (!Program.BlackOrWhite)
                 {
                     frameColor = Color.Black;
                 }

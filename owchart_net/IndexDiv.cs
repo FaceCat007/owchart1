@@ -33,14 +33,6 @@ namespace owchart_net {
         /// </summary>
         private System.Windows.Forms.Timer timer = new Timer();
 
-        private bool blackOrWhite = true;
-
-        public bool BlackOrWhite
-        {
-            get { return blackOrWhite; }
-            set { blackOrWhite = value; }
-        }
-
         /// <summary>
         /// 秒表事件
         /// </summary>
@@ -75,7 +67,7 @@ namespace owchart_net {
         /// <param name="comparePrice">比较价格</param>
         /// <returns>颜色</returns>
         public Color GetPriceColor(double price, double comparePrice) {
-            if (blackOrWhite)
+            if (Program.BlackOrWhite)
             {
                 if (price != 0)
                 {
@@ -148,7 +140,7 @@ namespace owchart_net {
             myBuffer = currentContext.Allocate(pe.Graphics, DisplayRectangle);
             g = myBuffer.Graphics;
             g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
-            if (!blackOrWhite)
+            if (!Program.BlackOrWhite)
             {
                 g.Clear(Color.White);
             }
@@ -168,7 +160,7 @@ namespace owchart_net {
                 Font font = new Font("微软雅黑", 12);
                 Font indexFont = new Font("微软雅黑", 12);
                 Color grayColor = Color.FromArgb(200, 200, 200);
-                if (!blackOrWhite)
+                if (!Program.BlackOrWhite)
                 {
                     titleColor = Color.Black;
                 }

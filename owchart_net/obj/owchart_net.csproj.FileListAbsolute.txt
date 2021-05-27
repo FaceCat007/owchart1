@@ -7,5 +7,5 @@
 \\Mac\Home\Desktop\todd\owchart\owchart_net\obj\Debug\owchart_net.TeachForm.resources
 \\Mac\Home\Desktop\todd\owchart\owchart_net\obj\Debug\owchart_net.csproj.GenerateResource.Cache
 \\Mac\Home\Desktop\todd\owchart\owchart_net\obj\Debug\owchart_net.pdb
-\\Mac\Home\Desktop\todd\owchart\owchart_net\bin\Debug\owchart_net.dll
-\\Mac\Home\Desktop\todd\owchart\owchart_net\obj\Debug\owchart_net.dll
+\\Mac\Home\Desktop\todd\owchart\owchart_net\bin\Debug\owchart_net.exe
+\\Mac\Home\Desktop\todd\owchart\owchart_net\obj\Debug\owchart_net.exe

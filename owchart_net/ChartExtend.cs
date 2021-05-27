@@ -231,6 +231,7 @@ namespace owchart_net {
         /// <param name="e"></param>
         private void tsmiBS_Click(object sender, EventArgs e) {
             if (!minuteMode) {
+                Random rd = new Random();
                 if (GetShape("买卖标记") == null) {
                     int fieldName = CTableEx.AutoField;
                     LineShape lineShape = AddLine("买卖标记", fieldName, mainDiv);
@@ -240,11 +241,11 @@ namespace owchart_net {
                     dataSource.AddColumn(lineShape.StyleField);
                     dataSource.AddColumn(lineShape.ColorField);
                     for (int i = 0; i < DataSource.RowsCount; i++) {
-                        int rdx = i % 6;
+                        int rdx = rd.Next(0, 20);
                         if (rdx == 0) {
                             DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_LOW));
                             DataSource.Set2(i, lineShape.StyleField, 4);
-                            if (blackOrWhite)
+                            if (Program.BlackOrWhite)
                             {
                                 DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
                             }
@@ -256,7 +257,7 @@ namespace owchart_net {
                         } else if (rdx == 1) {
                             DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_HIGH));
                             DataSource.Set2(i, lineShape.StyleField, 5);
-                            if (blackOrWhite)
+                            if (Program.BlackOrWhite)
                             {
                                 DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
                             }
@@ -267,7 +268,7 @@ namespace owchart_net {
                         } else if (rdx == 2) {
                             DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_LOW));
                             DataSource.Set2(i, lineShape.StyleField, 6);
-                            if (blackOrWhite)
+                            if (Program.BlackOrWhite)
                             {
                                 DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
                             }
@@ -278,7 +279,7 @@ namespace owchart_net {
                         } else if (rdx == 3) {
                             DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_HIGH));
                             DataSource.Set2(i, lineShape.StyleField, 7);
-                            if (blackOrWhite)
+                            if (Program.BlackOrWhite)
                             {
                                 DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
                             }
@@ -289,7 +290,7 @@ namespace owchart_net {
                         } else if (rdx == 4) {
                             DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_LOW));
                             DataSource.Set2(i, lineShape.StyleField, 8);
-                            if (blackOrWhite)
+                            if (Program.BlackOrWhite)
                             {
                                 DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
                             }
@@ -300,7 +301,7 @@ namespace owchart_net {
                         } else if (rdx == 5) {
                             DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_HIGH));
                             DataSource.Set2(i, lineShape.StyleField, 9);
-                            if (blackOrWhite)
+                            if (Program.BlackOrWhite)
                             {
                                 DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
                             }
@@ -621,7 +622,7 @@ namespace owchart_net {
                     {
                         TradeLine tradeLine = new TradeLine();
                         tradeLine.Bs = "多头";
-                        if (blackOrWhite)
+                        if (Program.BlackOrWhite)
                         {
                             AddPlot(this, tradeLine, System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, mp, 1, null, mouseOverDiv);
                         }
@@ -634,7 +635,7 @@ namespace owchart_net {
                     {
                         TradeLine tradeLine = new TradeLine();
                         tradeLine.Bs = "空头";
-                        if (blackOrWhite)
+                        if (Program.BlackOrWhite)
                         {
                             AddPlot(this, tradeLine, System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, mp, 1, null, mouseOverDiv);
                         }
@@ -645,7 +646,7 @@ namespace owchart_net {
                     }
                     else
                     {
-                        if (blackOrWhite)
+                        if (Program.BlackOrWhite)
                         {
                             AddPlot(System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, curPaintLine, mp, 1, null, mouseOverDiv);
                         }
@@ -659,17 +660,6 @@ namespace owchart_net {
                     RefreshGraph();
                 }
             }
-        }
-
-        private bool blackOrWhite = true;
-
-        /// <summary>
-        /// 黑色或白色
-        /// </summary>
-        public bool BlackOrWhite
-        {
-            get { return blackOrWhite; }
-            set { blackOrWhite = value; }
         }
 
         /// <summary>
@@ -723,7 +713,7 @@ namespace owchart_net {
                 barShape.BarStyle = BarStyle.Line;
                 SetBar("成交量", System.Drawing.Color.FromArgb(255, 255, 80), System.Drawing.Color.FromArgb(255, 255, 80));
 
-                if (!blackOrWhite)
+                if (!Program.BlackOrWhite)
                 {
                     mainDiv.ForeColor = Color.Black;
                     mainDiv.BackColor = Color.White;
@@ -801,7 +791,7 @@ namespace owchart_net {
                 div2Indicator = ChangeIndicator(indicatorName);
                 indicators.Add(indBoll);
                 indicators.Add(div2Indicator);
-                if (!blackOrWhite)
+                if (!Program.BlackOrWhite)
                 {
                     mainDiv.LeftYScale.TipForeColor = Color.White;
                     mainDiv.RightYScale.TipForeColor = Color.White;
@@ -940,7 +930,7 @@ namespace owchart_net {
                     if (data.open > data.close) {
                         DataSource.Set2(index, barVolume.StyleField, 0);
                         DataSource.Set2(index, candleShape.StyleField, 0);
-                        if (blackOrWhite)
+                        if (Program.BlackOrWhite)
                         {
                             DataSource.Set2(index, barVolume.ColorField, System.Drawing.Color.FromArgb(80, 255, 255).ToArgb());
                         }
@@ -952,7 +942,7 @@ namespace owchart_net {
                     } else {
                         DataSource.Set2(index, barVolume.StyleField, 1);
                         DataSource.Set2(index, candleShape.StyleField, 1);
-                        if (blackOrWhite)
+                        if (Program.BlackOrWhite)
                         {
                             DataSource.Set2(index, barVolume.ColorField, System.Drawing.Color.FromArgb(255, 80, 80).ToArgb());
                         }
@@ -1131,7 +1121,7 @@ namespace owchart_net {
                 div2Indicator.OnCalculate(0);
                 RefreshGraph();
             }
-            if (!blackOrWhite)
+            if (!Program.BlackOrWhite)
             {
                 List<BaseShape> shapes = indicator.GetShapeList();
                 for (int i = 0; i < shapes.Count; i++)
@@ -1186,7 +1176,7 @@ namespace owchart_net {
 
         public override Color GetPriceColor(double value1, double value2)
         {
-            if (blackOrWhite)
+            if (Program.BlackOrWhite)
             {
                 if (value1 >= value2)
                 {

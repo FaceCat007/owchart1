@@ -67,7 +67,7 @@ namespace owchart_net {
                     if (i > 1) {
                         cellStyle.Align = HorizontalAlign.Right;
                     }
-                    if (blackOrWhite)
+                    if (Program.BlackOrWhite)
                     {
                         cellStyle.TextColor = Color.FromArgb(255, 255, 255);
                     }
@@ -88,7 +88,7 @@ namespace owchart_net {
             timer.Tick += new EventHandler(timer_Tick);
             timer.Interval = 300;
             timer.Enabled = true;
-            if (!blackOrWhite)
+            if (!Program.BlackOrWhite)
             {
                 for (int i = 0; i < Columns.Count; i++)
                 {
@@ -120,18 +120,6 @@ namespace owchart_net {
         /// </summary>
         private List<GridCell> updateCells = new List<GridCell>();
 
-
-        private bool blackOrWhite = true;
-
-        /// <summary>
-        /// 黑色或白色
-        /// </summary>
-        public bool BlackOrWhite
-        {
-            get { return blackOrWhite; }
-            set { blackOrWhite = value; }
-        }
-
         /// <summary>
         /// 根据价格获取颜色
         /// </summary>
@@ -139,7 +127,7 @@ namespace owchart_net {
         /// <param name="comparePrice">比较价格</param>
         /// <returns>颜色</returns>
         public Color GetPriceColor(double price, double comparePrice) {
-            if (blackOrWhite)
+            if (Program.BlackOrWhite)
             {
                 if (price != 0)
                 {

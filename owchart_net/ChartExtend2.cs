@@ -200,7 +200,7 @@ namespace owchart_net {
             if (curPaintLine != null && curPaintLine.Length > 0) {
                 ChartDiv mouseOverDiv = GetMouseOverDiv();
                 if (mouseOverDiv != null) {
-                    if (blackOrWhite)
+                    if (Program.BlackOrWhite)
                     {
                         AddPlot(System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, curPaintLine, mp, 1, null, mouseOverDiv);
                     }
@@ -213,17 +213,6 @@ namespace owchart_net {
                     RefreshGraph();
                 }
             }
-        }
-
-        private bool blackOrWhite = true;
-
-        /// <summary>
-        /// 黑色或白色
-        /// </summary>
-        public bool BlackOrWhite
-        {
-            get { return blackOrWhite; }
-            set { blackOrWhite = value; }
         }
 
         /// <summary>
@@ -275,7 +264,7 @@ namespace owchart_net {
                 barShape.Title = "";
                 barShape.BarStyle = BarStyle.Line;
                 SetBar("成交量", System.Drawing.Color.FromArgb(255, 255, 80), System.Drawing.Color.FromArgb(255, 255, 80));
-                if (!blackOrWhite)
+                if (!Program.BlackOrWhite)
                 {
                     mainDiv.ForeColor = Color.Black;
                     mainDiv.BackColor = Color.White;
@@ -353,7 +342,7 @@ namespace owchart_net {
                 div2Indicator = ChangeIndicator(indicatorName);
                 indicators.Add(indBoll);
                 indicators.Add(div2Indicator);
-                if (!blackOrWhite)
+                if (!Program.BlackOrWhite)
                 {
                     mainDiv.LeftYScale.TipForeColor = Color.White;
                     mainDiv.RightYScale.TipForeColor = Color.White;
@@ -477,7 +466,7 @@ namespace owchart_net {
                     {
                         DataSource.Set2(index, barVolume.StyleField, 0);
                         DataSource.Set2(index, candleShape.StyleField, 0);
-                        if (blackOrWhite)
+                        if (Program.BlackOrWhite)
                         {
                             DataSource.Set2(index, barVolume.ColorField, System.Drawing.Color.FromArgb(80, 255, 255).ToArgb());
                         }
@@ -491,7 +480,7 @@ namespace owchart_net {
                     {
                         DataSource.Set2(index, barVolume.StyleField, 1);
                         DataSource.Set2(index, candleShape.StyleField, 1);
-                        if (blackOrWhite)
+                        if (Program.BlackOrWhite)
                         {
                             DataSource.Set2(index, barVolume.ColorField, System.Drawing.Color.FromArgb(255, 80, 80).ToArgb());
                         }
@@ -682,7 +671,7 @@ namespace owchart_net {
                 div2Indicator.OnCalculate(0);
                 RefreshGraph();
             }
-            if (!blackOrWhite)
+            if (!Program.BlackOrWhite)
             {
                 List<BaseShape> shapes = indicator.GetShapeList();
                 for (int i = 0; i < shapes.Count; i++)
@@ -737,7 +726,7 @@ namespace owchart_net {
 
         public override Color GetPriceColor(double value1, double value2)
         {
-            if (blackOrWhite)
+            if (Program.BlackOrWhite)
             {
                 if (value1 >= value2)
                 {
