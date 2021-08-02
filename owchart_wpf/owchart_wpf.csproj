@@ -67,11 +67,6 @@
       <HintPath>bin\Debug\owchart.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="owchart_net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\owchart_net.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -98,8 +93,23 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BaseRender.cs" />
+    <Compile Include="ChartExtend.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ChartExtend2.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CStr.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GridExtend.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Security.cs" />
+    <Compile Include="SecurityService.cs" />
+    <Compile Include="TradeLine.cs" />
+    <Compile Include="WPFPaint.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

@@ -194,8 +194,8 @@ namespace owchart_net {
         /// 鼠标按下事件
         /// </summary>
         /// <param name="e"></param>
-        protected override void OnMouseDown(System.Windows.Forms.MouseEventArgs e) {
-            base.OnMouseDown(e);
+        public override void OnMouseDownEx(System.Windows.Forms.MouseEventArgs e) {
+            base.OnMouseDownEx(e);
             System.Drawing.Point mp = e.Location;
             if (curPaintLine != null && curPaintLine.Length > 0) {
                 ChartDiv mouseOverDiv = GetMouseOverDiv();

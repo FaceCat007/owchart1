@@ -10,6 +10,7 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using owchart;
+using owchart_wpf;
 
 namespace owchart_net {
     /// <summary>
@@ -67,7 +68,7 @@ namespace owchart_net {
                     if (i > 1) {
                         cellStyle.Align = HorizontalAlign.Right;
                     }
-                    if (Program.BlackOrWhite)
+                    if (WPFPaint.BlackOrWhite)
                     {
                         cellStyle.TextColor = Color.FromArgb(255, 255, 255);
                     }
@@ -88,7 +89,7 @@ namespace owchart_net {
             timer.Tick += new EventHandler(timer_Tick);
             timer.Interval = 300;
             timer.Enabled = true;
-            if (!Program.BlackOrWhite)
+            if (!WPFPaint.BlackOrWhite)
             {
                 for (int i = 0; i < Columns.Count; i++)
                 {
@@ -104,6 +105,8 @@ namespace owchart_net {
                 gridRowStyle.HoveredBackColor = Color.Empty;
             }
         }
+
+        public ChartExtend chartExtend;
 
         /// <summary>
         /// 新数据代码
@@ -127,7 +130,7 @@ namespace owchart_net {
         /// <param name="comparePrice">比较价格</param>
         /// <returns>颜色</returns>
         public Color GetPriceColor(double price, double comparePrice) {
-            if (Program.BlackOrWhite)
+            if (WPFPaint.BlackOrWhite)
             {
                 if (price != 0)
                 {
@@ -170,9 +173,7 @@ namespace owchart_net {
                 Security security = new Security();
                 SecurityLatestData latestData = new SecurityLatestData();
                 if (SecurityService.GetSecurityByCode(code, ref security) > 0 && SecurityService.GetLatestData(code, ref latestData) > 0) {
-                    MainForm.instance.latestDiv.SecurityCode = code;
-                    MainForm.instance.latestDiv.Invalidate();
-                    MainForm.instance.chartExtend.ChangeSecurity(code);
+                    chartExtend.ChangeSecurity(code);
                 }
                 Console.WriteLine("1");
             }
@@ -190,9 +191,7 @@ namespace owchart_net {
                     Security security = new Security();
                     SecurityLatestData latestData = new SecurityLatestData();
                     if (SecurityService.GetSecurityByCode(code, ref security) > 0 && SecurityService.GetLatestData(code, ref latestData) > 0) {
-                        MainForm.instance.latestDiv.SecurityCode = code;
-                        MainForm.instance.latestDiv.Invalidate();
-                        MainForm.instance.chartExtend.ChangeSecurity(code);
+                        chartExtend.ChangeSecurity(code);
                     }
                 }
             }

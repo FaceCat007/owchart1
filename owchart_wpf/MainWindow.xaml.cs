@@ -27,6 +27,7 @@ using System.Data;
 using owchart;
 using System.Windows.Threading;
 using owchart_net;
+using System.Windows.Forms;
 
 namespace owchart_wpf
 {
@@ -35,95 +36,98 @@ namespace owchart_wpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        #region Gaia 2016/11/26
         /// <summary>
         /// 创建窗体
         /// </summary>
         public MainWindow()
         {
             InitializeComponent();
+            //注册消息
             SecurityService.Load();
-            mainForm = new MainForm();
-            Background = Brushes.Black;
-            //设置Winform交互控件
-            mainForm.TopLevel = false;
-            mainForm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            windowsFormsHost1.Child = mainForm;
-            timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(10000);
-            timer.Tick += new EventHandler(timer_Tick);
-            WindowState = WindowState.Maximized;
-            Closed += new EventHandler(MainWindow_Closed);
-        }
-
-        /// <summary>
-        /// 窗体关闭事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MainWindow_Closed(object sender, EventArgs e) {
-            Environment.Exit(0);
-        }
-
-        /// <summary>
-        /// 秒表
-        /// </summary>
-        private DispatcherTimer timer;
-
-        /// <summary>
-        /// 主窗体
-        /// </summary>
-        private MainForm mainForm;
-
-        /// <summary>
-        /// 秒表事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void timer_Tick(object sender, EventArgs e) {
- 
+            chartRender = new BaseRender();
+            ChartExtend chartExtend = new ChartExtend();
+            chartRender.eventBase = chartExtend;
+            chartExtend.OnLoadEx();
+            chartExtend.PaintCore = new WPFPaint();
+            (chartExtend.PaintCore as WPFPaint).render = chartRender;
+            chartRender.Height = 300;
+            //AddChild(chartRender);
+            Grid1.Children.Add(chartRender);
+            gridRender = new BaseRender();
+            GridExtend gridExtend = new GridExtend();
+            gridRender.eventBase = gridExtend;
+            gridExtend.PaintCore = new WPFPaint();
+            (gridExtend.PaintCore as WPFPaint).render = gridRender;
+            gridRender.Height = 300;
+            gridExtend.chartExtend = chartExtend;
+            Grid1.Children.Add(gridRender);
+            chartExtend.ChangeSecurity("600000.SH");
         }
 
         /// <summary>
         /// K线控件
         /// </summary>
-        private Chart chart = new Chart();
+        private BaseRender chartRender;
 
         /// <summary>
-        /// 当前被选中的画线工具
+        /// 表格控件
         /// </summary>
-        private string curPaintLine = string.Empty;
+        private BaseRender gridRender;
 
         /// <summary>
-        /// 坐标结构
+        /// 窗体关闭方法
         /// </summary>
-        public struct POINT
+        /// <param name="e">参数</param>
+        protected override void OnClosed(EventArgs e)
         {
-            public int x;
-            public int y;
+            base.OnClosed(e);
+            Process.GetCurrentProcess().Kill();
         }
 
         /// <summary>
-        /// 系统函数，用于获取坐标
+        /// 键盘按下方法
         /// </summary>
-        /// <param name="pt">输出坐标</param>
-        /// <returns>是否成功</returns>
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern bool GetCursorPos(out POINT pt);
+        /// <param name="e"></param>
+        protected override void OnKeyDown(System.Windows.Input.KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            if (chartRender != null)
+            {
+                chartRender.OnKeyDownEx(e);
+            }
+            if (gridRender != null)
+            {
+                gridRender.OnKeyDownEx(e);
+            }
+        }
 
         /// <summary>
-        /// 获取鼠标位置
+        /// 键盘抬起方法
         /// </summary>
-        /// <returns>坐标</returns>
-        public POINT GetMousePoint()
+        /// <param name="e"></param>
+        protected override void OnKeyUp(System.Windows.Input.KeyEventArgs e)
         {
-            POINT mp = new POINT();
-            GetCursorPos(out mp);
-            Point clientPoint = PointFromScreen(new Point(mp.x, mp.y));
-            mp.x = (int)clientPoint.X;
-            mp.y = (int)clientPoint.Y;
-            return mp;
+            base.OnKeyUp(e);
+            if (chartRender != null)
+            {
+                chartRender.OnKeyUpEx(e);
+            }
+            if (gridRender != null)
+            {
+                gridRender.OnKeyUpEx(e);
+            }
         }
-        #endregion
+
+        /// <summary>
+        /// 大小改变方法
+        /// </summary>
+        /// <param name="sizeInfo">参数</param>
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            base.OnRenderSizeChanged(sizeInfo);
+            System.Windows.Size newSize = sizeInfo.NewSize;
+            chartRender.Height = newSize.Height / 2;
+            gridRender.Height = newSize.Height / 2;
+        }
     }
 }

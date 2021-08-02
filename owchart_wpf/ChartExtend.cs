@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using owchart;
+using owchart_wpf;
 
 namespace owchart_net {
     /// <summary>
@@ -92,16 +93,19 @@ namespace owchart_net {
             this.tsmiKLine.Name = "ToolStripMenuItem";
             this.tsmiKLine.Size = new System.Drawing.Size(152, 22);
             this.tsmiKLine.Text = "纯K线界面";
+            this.tsmiKLine.Visible = false;
             this.tsmiKLine.Click += new EventHandler(tsmiKLine_Click);
 
             this.tsmiTeach.Name = "ToolStripMenuItem";
             this.tsmiTeach.Size = new System.Drawing.Size(152, 22);
             this.tsmiTeach.Text = "使用教程[新]";
+            this.tsmiTeach.Visible = false;
             this.tsmiTeach.Click += new EventHandler(tsmiTeach_Click);
 
             this.tsmiGuanyu.Name = "ToolStripMenuItem";
             this.tsmiGuanyu.Size = new System.Drawing.Size(152, 22);
             this.tsmiGuanyu.Text = "关于";
+            this.tsmiGuanyu.Visible = false;
             this.tsmiGuanyu.Click += new EventHandler(tsmiGuanyu_Click);
             // 
             // tsmi5M
@@ -204,8 +208,6 @@ namespace owchart_net {
         /// <param name="e"></param>
         private void tsmiTeach_Click(object sender, EventArgs e)
         {
-            TeachForm teachForm = new TeachForm();
-            teachForm.Show();
         }
 
         /// <summary>
@@ -215,8 +217,6 @@ namespace owchart_net {
         /// <param name="e"></param>
         private void tsmiKLine_Click(object sender, EventArgs e)
         {
-            MainForm2 mainForm2 = new MainForm2();
-            mainForm2.Show();
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace owchart_net {
                         if (rdx == 0) {
                             DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_LOW));
                             DataSource.Set2(i, lineShape.StyleField, 4);
-                            if (Program.BlackOrWhite)
+                            if (WPFPaint.BlackOrWhite)
                             {
                                 DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
                             }
@@ -257,7 +257,7 @@ namespace owchart_net {
                         } else if (rdx == 1) {
                             DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_HIGH));
                             DataSource.Set2(i, lineShape.StyleField, 5);
-                            if (Program.BlackOrWhite)
+                            if (WPFPaint.BlackOrWhite)
                             {
                                 DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
                             }
@@ -268,7 +268,7 @@ namespace owchart_net {
                         } else if (rdx == 2) {
                             DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_LOW));
                             DataSource.Set2(i, lineShape.StyleField, 6);
-                            if (Program.BlackOrWhite)
+                            if (WPFPaint.BlackOrWhite)
                             {
                                 DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
                             }
@@ -279,7 +279,7 @@ namespace owchart_net {
                         } else if (rdx == 3) {
                             DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_HIGH));
                             DataSource.Set2(i, lineShape.StyleField, 7);
-                            if (Program.BlackOrWhite)
+                            if (WPFPaint.BlackOrWhite)
                             {
                                 DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
                             }
@@ -290,7 +290,7 @@ namespace owchart_net {
                         } else if (rdx == 4) {
                             DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_LOW));
                             DataSource.Set2(i, lineShape.StyleField, 8);
-                            if (Program.BlackOrWhite)
+                            if (WPFPaint.BlackOrWhite)
                             {
                                 DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
                             }
@@ -301,7 +301,7 @@ namespace owchart_net {
                         } else if (rdx == 5) {
                             DataSource.Set2(i, fieldName, DataSource.Get2(i, COLUMN_HIGH));
                             DataSource.Set2(i, lineShape.StyleField, 9);
-                            if (Program.BlackOrWhite)
+                            if (WPFPaint.BlackOrWhite)
                             {
                                 DataSource.Set2(i, lineShape.ColorField, Color.FromArgb(80, 255, 80).ToArgb());
                             }
@@ -322,8 +322,6 @@ namespace owchart_net {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void tsmiGuanyu_Click(object sender, EventArgs e) {
-            AboutForm aboutForm = new AboutForm();
-            aboutForm.ShowDialog();
         }
 
         /// <summary>
@@ -615,14 +613,16 @@ namespace owchart_net {
         public override void OnMouseDownEx(System.Windows.Forms.MouseEventArgs e) {
             base.OnMouseDownEx(e);
             System.Drawing.Point mp = e.Location;
-            if (curPaintLine != null && curPaintLine.Length > 0) {
+            if (curPaintLine != null && curPaintLine.Length > 0)
+            {
                 ChartDiv mouseOverDiv = GetMouseOverDiv();
-                if (mouseOverDiv != null) {
+                if (mouseOverDiv != null)
+                {
                     if (curPaintLine == "LINEB")
                     {
                         TradeLine tradeLine = new TradeLine();
                         tradeLine.Bs = "多头";
-                        if (Program.BlackOrWhite)
+                        if (WPFPaint.BlackOrWhite)
                         {
                             AddPlot(this, tradeLine, System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, mp, 1, null, mouseOverDiv);
                         }
@@ -635,7 +635,7 @@ namespace owchart_net {
                     {
                         TradeLine tradeLine = new TradeLine();
                         tradeLine.Bs = "空头";
-                        if (Program.BlackOrWhite)
+                        if (WPFPaint.BlackOrWhite)
                         {
                             AddPlot(this, tradeLine, System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, mp, 1, null, mouseOverDiv);
                         }
@@ -646,7 +646,7 @@ namespace owchart_net {
                     }
                     else
                     {
-                        if (Program.BlackOrWhite)
+                        if (WPFPaint.BlackOrWhite)
                         {
                             AddPlot(System.Drawing.Color.FromArgb(200, 200, 200), System.Drawing.Color.White, curPaintLine, mp, 1, null, mouseOverDiv);
                         }
@@ -658,6 +658,15 @@ namespace owchart_net {
                     Cursor = System.Windows.Forms.Cursors.Default;
                     curPaintLine = "";
                     RefreshGraph();
+                }
+            }
+            else
+            {
+                if (e.Button == MouseButtons.Right && e.Clicks == 1)
+                {
+                    POINT mp2 = new POINT();
+                    BaseRender.GetCursorPos(out mp2);
+                    contextMenuStrip1.Show(new Point(mp2.x, mp2.y));
                 }
             }
         }
@@ -713,7 +722,7 @@ namespace owchart_net {
                 barShape.BarStyle = BarStyle.Line;
                 SetBar("成交量", System.Drawing.Color.FromArgb(255, 255, 80), System.Drawing.Color.FromArgb(255, 255, 80));
 
-                if (!Program.BlackOrWhite)
+                if (!WPFPaint.BlackOrWhite)
                 {
                     mainDiv.ForeColor = Color.Black;
                     mainDiv.BackColor = Color.White;
@@ -791,7 +800,7 @@ namespace owchart_net {
                 div2Indicator = ChangeIndicator(indicatorName);
                 indicators.Add(indBoll);
                 indicators.Add(div2Indicator);
-                if (!Program.BlackOrWhite)
+                if (!WPFPaint.BlackOrWhite)
                 {
                     mainDiv.LeftYScale.TipForeColor = Color.White;
                     mainDiv.RightYScale.TipForeColor = Color.White;
@@ -930,7 +939,7 @@ namespace owchart_net {
                     if (data.open > data.close) {
                         DataSource.Set2(index, barVolume.StyleField, 0);
                         DataSource.Set2(index, candleShape.StyleField, 0);
-                        if (Program.BlackOrWhite)
+                        if (WPFPaint.BlackOrWhite)
                         {
                             DataSource.Set2(index, barVolume.ColorField, System.Drawing.Color.FromArgb(80, 255, 255).ToArgb());
                         }
@@ -942,7 +951,7 @@ namespace owchart_net {
                     } else {
                         DataSource.Set2(index, barVolume.StyleField, 1);
                         DataSource.Set2(index, candleShape.StyleField, 1);
-                        if (Program.BlackOrWhite)
+                        if (WPFPaint.BlackOrWhite)
                         {
                             DataSource.Set2(index, barVolume.ColorField, System.Drawing.Color.FromArgb(255, 80, 80).ToArgb());
                         }
@@ -1121,7 +1130,7 @@ namespace owchart_net {
                 div2Indicator.OnCalculate(0);
                 RefreshGraph();
             }
-            if (!Program.BlackOrWhite)
+            if (!WPFPaint.BlackOrWhite)
             {
                 List<BaseShape> shapes = indicator.GetShapeList();
                 for (int i = 0; i < shapes.Count; i++)
@@ -1176,7 +1185,7 @@ namespace owchart_net {
 
         public override Color GetPriceColor(double value1, double value2)
         {
-            if (Program.BlackOrWhite)
+            if (WPFPaint.BlackOrWhite)
             {
                 if (value1 >= value2)
                 {

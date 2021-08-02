@@ -26,16 +26,14 @@ namespace owchart_net {
             InitializeComponent();
         }
 
-        public override void OnPaintAfter(Graphics g)
+        public override void OnPaintAfter(CPaint paint)
         {
             Color pColor = Color.FromArgb(255, 0, 0);
             Point[] points = new Point[3];
             points[0] = new Point(0, 0);
             points[1] = new Point(10, 0);
             points[2] = new Point(0, 10);
-            Brush brush = new SolidBrush(pColor);
-            g.FillPolygon(brush, points);
-            brush.Dispose();
+            paint.FillPolygon(pColor, points);
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
