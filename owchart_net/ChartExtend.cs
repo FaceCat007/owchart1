@@ -175,6 +175,14 @@ namespace owchart_net {
             ContextMenuStrip = contextMenuStrip1;
 
             UseNewRectangle = true;
+
+            ////获取坐标对应的索引
+            //int index = GetIndexByPoint(Control.MousePosition);
+            //if (index != -1)
+            //{
+            //    double high = DataSource.Get2(index, ChartExtend.COLUMN_HIGH);
+            //    double low = DataSource.Get2(index, ChartExtend.COLUMN_LOW);
+            //}
         }
 
         public List<TradeLine> tradeLines = new List<TradeLine>();
@@ -696,6 +704,7 @@ namespace owchart_net {
                 scaleSteps.Add(LbCommon.GetDateNum(1970, 1, 1, 13, 30, 0, 0));
                 scaleSteps.Add(LbCommon.GetDateNum(1970, 1, 1, 14, 0, 0, 0));
                 scaleSteps.Add(LbCommon.GetDateNum(1970, 1, 1, 14, 30, 0, 0));
+                scaleSteps.Add(LbCommon.GetDateNum(1970, 1, 1, 15, 0, 0, 0));
                 mainDiv.XScale.ScaleSteps = scaleSteps;
                 mainDiv.PaddingBottom = 10;
                 mainDiv.PaddingTop = 10;

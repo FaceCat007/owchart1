@@ -125,10 +125,10 @@ namespace owchart_net {
                     for (int i = 0; i < codesSize; i++) {
                         latestCodes += strCodes[i];
                         if (i == codesSize - 1 || (i > 0 && i % 50 == 0)) {
-                            String latestDatasResult = GetSinaLatestDatasStrByCodes(latestCodes);
+                            String latestDatasResult = get163LatestDatasByCodes(latestCodes);
                             if (latestDatasResult != null && latestDatasResult.Length > 0) {
                                 List<SecurityLatestData> latestDatas = new List<SecurityLatestData>();
-                                GetLatestDatasBySinaStr(latestDatasResult, 0, latestDatas);
+                                GetLatestDatasBy163Str(latestDatasResult, 0, latestDatas);
                                 String[] subStrs = latestDatasResult.Split(new String[] { ";\n" }, StringSplitOptions.RemoveEmptyEntries);
                                 int latestDatasSize = latestDatas.Count;
                                 for (int j = 0; j < latestDatasSize; j++) {
@@ -168,7 +168,7 @@ namespace owchart_net {
                         }
                     }
                 }
-                Thread.Sleep(1);
+                Thread.Sleep(20000);
             }
         }
 
@@ -178,6 +178,188 @@ namespace owchart_net {
         public static void Start() {
             Thread thread = new Thread(new ThreadStart(RunWork));
             thread.Start();
+        }
+
+        public static String get163LatestDatasByCodes(String strCodes)
+        {
+            String url = "http://api.money.126.net/data/feed/{0},money.api%5D";
+            String[] codes = strCodes.Split(new String[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            List<String> requestCodes = new List<string>();
+            for (int i = 0; i < codes.Length; i++)
+            {
+                String strCode = codes[i];
+                if (strCode.IndexOf(".SH") != -1)
+                {
+                    strCode = "0" + strCode.Replace(".SH", "");
+                }
+                else if (strCode.IndexOf(".SZ") != -1)
+                {
+                    strCode = "1" + strCode.Replace(".SZ", "");
+                }
+                requestCodes.Add(strCode);
+            }
+            String codesStr = "";
+            for (int i = 0; i < requestCodes.Count; i++)
+            {
+                codesStr += requestCodes[i];
+                if (i != requestCodes.Count - 1)
+                {
+                    codesStr += ",";
+                }
+            }
+            return Get(String.Format(url, codesStr));
+        }
+
+        /// <summary>
+        /// 根据字符串获取新浪的最新数据
+        /// </summary>
+        /// <param name="str">数据字符串</param>
+        /// <param name="formatType">格式</param>
+        /// <param name="data">最新数据</param>
+        /// <returns>状态</returns>
+        public static int GetLatestDataBy163Str(String str, int formatType, ref SecurityLatestData data)
+        {
+            str = str.Replace("\"", "");
+            String[] strs = str.Split(',');
+            for (int i = 0; i < strs.Length; i++)
+            {
+                String key = strs[i].Substring(0, strs[i].IndexOf(": ")).Replace(" ", "");
+                String value = strs[i].Substring(strs[i].IndexOf(": ") + 2);
+                switch (key)
+                {
+                    case "time":
+                        DateTime dateTime = Convert.ToDateTime(value);
+                        data.m_date = (dateTime - new DateTime(1970, 1, 1)).TotalSeconds;
+                        break;
+                    case "code":
+                        if (value.IndexOf("0") == 0)
+                        {
+                            data.m_code = value.Substring(1) + ".SH";
+                        }
+                        else
+                        {
+                            data.m_code = value.Substring(1) + ".SZ";
+                        }
+                        break;
+                    case "high":
+                        double.TryParse(value, out data.m_high);
+                        break;
+                    case "low":
+                        double.TryParse(value, out data.m_low);
+                        break;
+                    case "open":
+                        double.TryParse(value, out data.m_open);
+                        break;
+                    case "yestclose":
+                        double.TryParse(value, out data.m_lastClose);
+                        break;
+                    case "turnover":
+                        double.TryParse(value, out data.m_amount);
+                        data.m_turnoverRate = data.m_amount;
+                        break;
+                    case "name":
+                        //data.m_name = value;
+                        break;
+                    case "ask1":
+                        double.TryParse(value, out data.m_sellPrice1);
+                        break;
+                    case "ask2":
+                        double.TryParse(value, out data.m_sellPrice2);
+                        break;
+                    case "ask3":
+                        double.TryParse(value, out data.m_sellPrice3);
+                        break;
+                    case "ask4":
+                        double.TryParse(value, out data.m_sellPrice4);
+                        break;
+                    case "ask5":
+                        double.TryParse(value, out data.m_sellPrice5);
+                        break;
+                    case "askvol1":
+                        int.TryParse(value, out data.m_sellVolume1);
+                        break;
+                    case "askvol2":
+                        int.TryParse(value, out data.m_sellVolume2);
+                        break;
+                    case "askvol3":
+                        int.TryParse(value, out data.m_sellVolume3);
+                        break;
+                    case "askvol4":
+                        int.TryParse(value, out data.m_sellVolume4);
+                        break;
+                    case "askvol5":
+                        int.TryParse(value, out data.m_sellVolume5);
+                        break;
+                    case "bid1":
+                        double.TryParse(value, out data.m_buyPrice1);
+                        break;
+                    case "bid2":
+                        double.TryParse(value, out data.m_buyPrice2);
+                        break;
+                    case "bid3":
+                        double.TryParse(value, out data.m_buyPrice3);
+                        break;
+                    case "bid4":
+                        double.TryParse(value, out data.m_buyPrice4);
+                        break;
+                    case "bid5":
+                        double.TryParse(value, out data.m_buyPrice5);
+                        break;
+                    case "bidvol1":
+                        int.TryParse(value, out data.m_buyVolume1);
+                        break;
+                    case "bidvol2":
+                        int.TryParse(value, out data.m_buyVolume2);
+                        break;
+                    case "bidvol3":
+                        int.TryParse(value, out data.m_buyVolume3);
+                        break;
+                    case "bidvol4":
+                        int.TryParse(value, out data.m_buyVolume4);
+                        break;
+                    case "bidvol5":
+                        int.TryParse(value, out data.m_buyVolume5);
+                        break;
+                    case "price":
+                        double.TryParse(value, out data.m_close);
+                        break;
+                    case "volume":
+                        double.TryParse(value, out data.m_volume);
+                        break;
+                }
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// 根据字符串获取新浪最新数据
+        /// </summary>
+        /// <param name="str">数据字符串</param>
+        /// <param name="formatType">格式</param>
+        /// <param name="datas">最新数据</param>
+        /// <returns>状态</returns>
+        public static int GetLatestDatasBy163Str(String str, int formatType, List<SecurityLatestData> datas)
+        {
+            String[] strs = str.Split(new String[] { "}" }, StringSplitOptions.RemoveEmptyEntries);
+            int strLen = strs.Length;
+            for (int i = 0; i < strLen; i++)
+            {
+                SecurityLatestData latestData = new SecurityLatestData();
+                String dataStr = strs[i];
+                if (dataStr.Length > 50)
+                {
+                    if (dataStr.LastIndexOf("{") != -1)
+                    {
+                        dataStr = dataStr.Substring(dataStr.LastIndexOf("{") + 1);
+                    }
+                    GetLatestDataBy163Str(dataStr, formatType, ref latestData);
+                    if (latestData.m_date > 0)
+                    {
+                        datas.Add(latestData);
+                    }
+                }
+            }
+            return 1;
         }
 
         /// <summary>

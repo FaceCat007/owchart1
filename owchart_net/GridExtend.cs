@@ -332,5 +332,85 @@ namespace owchart_net {
                 }
             }
         }
+
+        /// <summary>
+        /// 鼠标移入单元格事件
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <param name="e"></param>
+        public override void OnCellMouseEnter(GridCell cell, MouseEventArgs e)
+        {
+            base.OnCellMouseEnter(cell, e);
+        }
+
+        /// <summary>
+        /// 鼠标移出单元格事件
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <param name="e"></param>
+        public override void OnCellMouseLeave(GridCell cell, MouseEventArgs e)
+        {
+            base.OnCellMouseLeave(cell, e);
+        }
+
+        /// <summary>
+        /// 鼠标在单元格移动事件
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <param name="e"></param>
+        public override void OnCellMouseMove(GridCell cell, MouseEventArgs e)
+        {
+            base.OnCellMouseMove(cell, e);
+        }
+
+        /// <summary>
+        /// 鼠标在单元格抬起事件
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <param name="e"></param>
+        public override void OnCellMouseUp(GridCell cell, MouseEventArgs e)
+        {
+            base.OnCellMouseUp(cell, e);
+        }
+
+        /// <summary>
+        /// 鼠标在单元格按下事件
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <param name="e"></param>
+        public override void OnCellMouseDown(GridCell cell, MouseEventArgs e)
+        {
+            base.OnCellMouseDown(cell, e);
+        }
+
+        /// <summary>
+        /// 选中单元格改变事件
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <param name="e"></param>
+        public override void OnSelectedCellsChanged()
+        {
+            base.OnSelectedCellsChanged();
+        }
+
+        /// <summary>
+        /// 选中列改变事件
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <param name="e"></param>
+        public override void OnSelectedColumnsChanged()
+        {
+            base.OnSelectedColumnsChanged();
+        }
+
+        /// <summary>
+        /// 选中行改变事件
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <param name="e"></param>
+        public override void OnSelectedRowsChanged()
+        {
+            base.OnSelectedRowsChanged();
+        }
     }
 }

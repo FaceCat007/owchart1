@@ -38,7 +38,7 @@ namespace owchart_wpf
         /// <summary>
         /// 绘图模式
         /// </summary>
-        public int writeMode = 1;
+        public int writeMode = 0;
 
         /// <summary>
         /// 缓存的WPF图像

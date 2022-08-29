@@ -10,11 +10,57 @@ using System.Globalization;
 using System.Windows.Forms;
 using System.Windows.Controls;
 using System.Windows;
+using Microsoft.Win32;
 
 namespace owchart_wpf
 {
     public class WPFPaint : CPaint
     {
+        public static float gdiScale = 1.0f;
+
+        static WPFPaint()
+        {
+            gdiScale = (float)(96 / getLogPiex());
+            Console.WriteLine("1");
+        }
+
+        public static float getLogPiex()
+        {
+            float returnValue = 96;
+            try
+            {
+                RegistryKey key = Registry.CurrentUser;
+                RegistryKey pixeKey = key.OpenSubKey("Control Panel\\Desktop");
+                if (pixeKey != null)
+                {
+                    object pixels = pixeKey.GetValue("LogPixels");
+                    if (pixels != null)
+                    {
+                        returnValue = float.Parse(pixels.ToString());
+                    }
+                    pixeKey.Close();
+                }
+                else
+                {
+                    pixeKey = key.OpenSubKey("Control Panel\\Desktop\\WindowMetrics");
+                    if (pixeKey != null)
+                    {
+                        object pixels = pixeKey.GetValue("AppliedDPI");
+                        if (pixels != null)
+                        {
+                            returnValue = float.Parse(pixels.ToString());
+                        }
+                        pixeKey.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                returnValue = 96;
+            }
+            return returnValue;
+        }
+
         private static bool blackOrWhite = true;
 
         /// <summary>
@@ -186,7 +232,7 @@ namespace owchart_wpf
         {
             if (g != null)
             {
-                font = new Font(font.FontFamily, font.Size / 2, font.Style);
+                font = new Font(font.FontFamily, font.Size * gdiScale, font.Style);
                 base.DrawString(text, font, color, point);
             }
             else
@@ -203,7 +249,7 @@ namespace owchart_wpf
         {
             if (g != null)
             {
-                font = new Font(font.FontFamily, font.Size / 2, font.Style);
+                font = new Font(font.FontFamily, font.Size * gdiScale, font.Style);
                 base.DrawString(text, font, color, x, y);
             }
             else
@@ -220,8 +266,7 @@ namespace owchart_wpf
         {
             if (g != null)
             {
-
-                font = new Font(font.FontFamily, font.Size / 2, font.Style);
+                font = new Font(font.FontFamily, font.Size * gdiScale, font.Style);
                 base.DrawString(text, font, color, rect);
             }
             else
@@ -589,7 +634,7 @@ namespace owchart_wpf
         {
             if (g != null)
             {
-                font = new Font(font.FontFamily, font.Size / 2, font.Style);
+                font = new Font(font.FontFamily, font.Size * gdiScale, font.Style);
                 return base.MeasureString(text, font);
             }
             else
